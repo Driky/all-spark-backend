@@ -53,7 +53,18 @@ defmodule Pantheon.MixProject do
       {:telemetry_poller, "~> 1.0"},
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
-      {:bandit, "~> 1.5"}
+      {:bandit, "~> 1.5"},
+
+      # Event Sourcing & CQRS
+      {:commanded, "~> 1.4"},
+      {:commanded_eventstore_adapter, "~> 1.2"},
+      {:eventstore, "~> 1.3"},
+
+      # Utilities
+      {:ex_machina, "~> 2.7", only: [:dev, :test]},
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.1", only: [:dev], runtime: false},
+      {:typed_struct, "~> 0.3.0"}
     ]
   end
 
