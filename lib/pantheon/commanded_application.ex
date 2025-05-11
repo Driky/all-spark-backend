@@ -10,5 +10,5 @@ defmodule Pantheon.CommandedApplication do
     ]
 
   # We'll add routers as we implement bounded contexts
-  # router Pantheon.PatientManagement.Router
+  router Pantheon.PatientManagement.Router
 end

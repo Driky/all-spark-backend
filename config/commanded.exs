@@ -1,6 +1,10 @@
+# config/commanded.exs - CORRECTED VERSION
 import Config
 
-config :pantheon, :commanded,
+config :commanded,
+  event_store_adapter: Commanded.EventStore.Adapters.EventStore
+
+config :pantheon, Pantheon.CommandedApplication,
   event_store: [
     adapter: Commanded.EventStore.Adapters.EventStore,
     event_store: Pantheon.EventStore

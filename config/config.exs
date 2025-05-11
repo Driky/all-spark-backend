@@ -22,6 +22,8 @@ config :pantheon, PantheonWeb.Endpoint,
   pubsub_server: Pantheon.PubSub,
   live_view: [signing_salt: "ZuecMYks"]
 
+config :pantheon, event_stores: [Pantheon.EventStore]
+
 # Configure esbuild (the version is required)
 config :esbuild,
   version: "0.17.11",

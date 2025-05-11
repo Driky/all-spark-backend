@@ -40,7 +40,7 @@ Pantheon is a comprehensive nutrition management system that focuses on nutritio
 
 5. Set up the EventStore:
    ```bash
-   mix event_store.setup
+   mix do event_store.create, event_store.init
    ```
 
 6. Start the Phoenix server:
