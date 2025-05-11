@@ -14,6 +14,8 @@ defmodule Pantheon.Application do
       Pantheon.Repo,
       {DNSCluster, query: Application.get_env(:pantheon, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: Pantheon.PubSub},
+      Pantheon.EventStore,
+      Pantheon.CommandedApplication,
       # Start a worker by calling: Pantheon.Worker.start_link(arg)
       # {Pantheon.Worker, arg},
       # Start to serve requests, typically the last entry
