@@ -24,6 +24,9 @@ config :pantheon, PantheonWeb.Endpoint,
 
 config :pantheon, event_stores: [Pantheon.EventStore]
 
+config :commanded_ecto_projections,
+  repo: Pantheon.Repo
+
 # Configure esbuild (the version is required)
 config :esbuild,
   version: "0.17.11",

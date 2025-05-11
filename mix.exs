@@ -58,6 +58,7 @@ defmodule Pantheon.MixProject do
       # Event Sourcing & CQRS
       {:commanded, "~> 1.4"},
       {:commanded_eventstore_adapter, "~> 1.2"},
+      {:commanded_ecto_projections, "~> 1.4"},
       {:eventstore, "~> 1.3"},
 
       # Utilities

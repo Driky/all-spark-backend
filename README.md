@@ -38,6 +38,11 @@ Pantheon is a comprehensive nutrition management system that focuses on nutritio
    mix ecto.setup
    ```
 
+5. Run migrations if you've added new ones:
+   ```bash
+   mix ecto.migrate
+   ```
+
 5. Set up the EventStore:
    ```bash
    mix do event_store.create, event_store.init
