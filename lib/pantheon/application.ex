@@ -1,7 +1,9 @@
 defmodule Pantheon.Application do
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
-  @moduledoc false
+  @moduledoc """
+  Pantheon application module responsible for starting the application's supervision tree.
+  """
 
   use Application
 
