@@ -1,18 +1,94 @@
 # Pantheon
 
-To start your Phoenix server:
+A DDD Elixir Phoenix Nutrition Management System.
 
-  * Run `mix setup` to install and setup dependencies
-  * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
+## Project Overview
+
+Pantheon is a comprehensive nutrition management system that focuses on nutritionist-patient relationships. It enables nutritionists to track patient data over time, including profile information, body composition measurements, nutrition plans, and patient-reported wellness indicators.
+
+## Development Setup
+
+### Prerequisites
+
+- Elixir 1.15+
+- Erlang 26+
+- Docker and Docker Compose
+- PostgreSQL client (optional, for direct DB access)
+
+### Initial Setup
+
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   cd pantheon
+   ```
+
+2. Start the PostgreSQL database using Docker:
+   ```bash
+   docker-compose up -d
+   ```
+
+3. Install dependencies:
+   ```bash
+   mix deps.get
+   ```
+
+4. Create and migrate the database:
+   ```bash
+   mix ecto.setup
+   ```
+
+5. Set up the EventStore:
+   ```bash
+   mix event_store.setup
+   ```
+
+6. Start the Phoenix server:
+   ```bash
+   mix phx.server
+   ```
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+### Running Tests
 
-## Learn more
+```bash
+mix test
+```
 
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+### Database Management
+
+- The application uses two databases:
+  - A regular PostgreSQL database for Ecto schemas
+  - An EventStore database for event sourcing
+
+- To reset the databases:
+  ```bash
+  mix ecto.reset
+  mix event_store.reset
+  ```
+
+## Architecture
+
+Pantheon follows Domain-Driven Design principles with CQRS (Command Query Responsibility Segregation) and Event Sourcing.
+
+### Bounded Contexts
+
+- **Patient Management**: Patient profiles and relationships
+- **Nutrition Planning**: Nutrition plans and adherence tracking
+- **Biometric Tracking**: Body composition measurements
+- **Wellness Monitoring**: Mood and fatigue tracking
+
+## Development Workflow
+
+This project uses trunk-based development (working directly on the main branch). Commits should:
+
+- Represent complete, testable units of functionality
+- Follow the format: `type(scope): description`
+  - Types: feat, fix, docs, style, refactor, test, chore
+  - Scope: bounded context or module affected
+  - Description: concise explanation of the change
+
+## License
+
+[Add license information here]
