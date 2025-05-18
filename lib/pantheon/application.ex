@@ -19,7 +19,8 @@ defmodule Pantheon.Application do
       # Start a worker by calling: Pantheon.Worker.start_link(arg)
       # {Pantheon.Worker, arg},
       # Start to serve requests, typically the last entry
-      PantheonWeb.Endpoint
+      PantheonWeb.Endpoint,
+      Pantheon.PatientManagement.Projections.PatientProjector
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

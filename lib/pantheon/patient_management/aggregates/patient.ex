@@ -19,22 +19,18 @@ defmodule Pantheon.PatientManagement.Aggregates.Patient do
 
   # Command handlers
 
+  # Case 1: Handle literal nil
   @spec execute(t() | nil, RegisterPatient.t()) :: {:ok, PatientRegistered.t()} | {:error, atom()}
   def execute(nil, %RegisterPatient{} = command) do
-    with {:ok, _} <- validate_patient_id(command.patient_id),
-         :ok <- validate_required_fields(command) do
-      {:ok, %PatientRegistered{
-        patient_id: command.patient_id,
-        first_name: command.first_name,
-        last_name: command.last_name,
-        date_of_birth: command.date_of_birth,
-        contact_details: command.contact_details,
-        nutritionist_id: command.nutritionist_id
-      }}
-    end
+    handle_register_patient_command(command)
   end
 
-  def execute(%__MODULE__{}, %RegisterPatient{}) do
+  # Case 2: Handle struct with nil ID
+  def execute(%__MODULE__{patient_id: nil}, %RegisterPatient{} = command) do
+    handle_register_patient_command(command)
+  end
+
+  def execute(%__MODULE__{patient_id: patient_id}, %RegisterPatient{}) when not is_nil(patient_id) do
     {:error, :patient_already_registered}
   end
 
@@ -50,6 +46,20 @@ defmodule Pantheon.PatientManagement.Aggregates.Patient do
         first_name: command.first_name || patient.first_name,
         last_name: command.last_name || patient.last_name,
         contact_details: command.contact_details || patient.contact_details
+      }}
+    end
+  end
+
+  defp handle_register_patient_command(command) do
+    with {:ok, _} <- validate_patient_id(command.patient_id),
+         :ok <- validate_required_fields(command) do
+      {:ok, %PatientRegistered{
+        patient_id: command.patient_id,
+        first_name: command.first_name,
+        last_name: command.last_name,
+        date_of_birth: command.date_of_birth,
+        contact_details: command.contact_details,
+        nutritionist_id: command.nutritionist_id
       }}
     end
   end

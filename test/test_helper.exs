@@ -8,3 +8,6 @@ if System.get_env("CI") != "true" do
   Mix.Task.run("event_store.create", ["--quiet"])
   Mix.Task.run("event_store.init", ["--quiet"])
 end
+
+# Reset the EventStore for tests
+Application.ensure_all_started(:eventstore)

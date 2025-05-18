@@ -4,6 +4,8 @@ defmodule Pantheon.PatientManagement.ValueObjects.ContactDetails do
   """
   use TypedStruct
 
+  @derive Jason.Encoder
+
   alias Pantheon.PatientManagement.ValueObjects.Email
 
   typedstruct do
