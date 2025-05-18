@@ -20,8 +20,12 @@ defmodule PantheonWeb.Router do
     get "/", PageController, :home
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", PantheonWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", PantheonWeb do
+    pipe_through :api
+
+    # Patient management routes
+    resources "/patients", PatientController, except: [:new, :edit, :delete]
+    get "/nutritionists/:nutritionist_id/patients", PatientController, :list_by_nutritionist
+  end
+
 end
