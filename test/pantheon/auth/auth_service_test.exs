@@ -32,6 +32,27 @@ defmodule Pantheon.Auth.AuthServiceTest do
     def sign_in_with_password(_, _) do
       {:error, %{"message" => "Invalid credentials"}}
     end
+
+    def send_magic_link(_, %{email: "test@example.com"}) do
+      {:ok, %{"message" => "Magic link sent"}}
+    end
+
+    def send_magic_link(_, _) do
+      {:error, %{"message" => "Failed to send magic link"}}
+    end
+  end
+
+  # Add to the existing test module:
+  describe "send_magic_link/1" do
+    test "returns success message when sending magic link" do
+      assert {:ok, "Magic link sent"} =
+        AuthService.send_magic_link("test@example.com")
+    end
+
+    test "returns error when magic link fails" do
+      assert {:error, "Failed to send magic link"} =
+        AuthService.send_magic_link("invalid@example.com")
+    end
   end
 
   # Add to the existing test module:

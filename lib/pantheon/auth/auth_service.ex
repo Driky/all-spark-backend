@@ -48,4 +48,23 @@ defmodule Pantheon.Auth.AuthService do
         {:error, error["message"] || "Invalid credentials"}
     end
   end
+
+  @doc """
+  Sends a magic link to the provided email.
+  """
+  @spec send_magic_link(String.t()) :: {:ok, String.t()} | {:error, String.t()}
+  def send_magic_link(email) do
+    # Get the GoTrue module (real or mocked)
+    gotrue = Application.get_env(:pantheon, :gotrue_module, Supabase.GoTrue)
+    client = Application.get_env(:pantheon, :supabase_client, Client)
+
+    params = %{email: email}
+
+    case gotrue.send_magic_link(client, params) do
+      {:ok, response} ->
+        {:ok, response["message"] || "Magic link sent"}
+      {:error, error} ->
+        {:error, error["message"] || "Failed to send magic link"}
+    end
+  end
 end
