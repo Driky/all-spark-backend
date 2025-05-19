@@ -18,6 +18,33 @@ defmodule Pantheon.Auth.AuthServiceTest do
     def sign_up_with_password(_, _) do
       {:error, %{"message" => "Invalid signup"}}
     end
+
+    def sign_in_with_password(_, %{email: "test@example.com", password: "password123"}) do
+      {:ok, %{
+        "access_token" => "mock_token",
+        "user" => %{
+          "id" => "user-123",
+          "email" => "test@example.com"
+        }
+      }}
+    end
+
+    def sign_in_with_password(_, _) do
+      {:error, %{"message" => "Invalid credentials"}}
+    end
+  end
+
+  # Add to the existing test module:
+  describe "sign_in/2" do
+    test "returns ok with valid credentials" do
+      assert {:ok, %{token: "mock_token", user_id: "user-123"}} =
+        AuthService.sign_in("test@example.com", "password123")
+    end
+
+    test "returns error with invalid credentials" do
+      assert {:error, "Invalid credentials"} =
+        AuthService.sign_in("test@example.com", "wrong")
+    end
   end
 
   setup do
