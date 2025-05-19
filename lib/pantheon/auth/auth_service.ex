@@ -67,4 +67,24 @@ defmodule Pantheon.Auth.AuthService do
         {:error, error["message"] || "Failed to send magic link"}
     end
   end
+
+  @doc """
+  Verifies a JWT token from Supabase.
+  Returns {:ok, user_data} if valid, {:error, reason} otherwise.
+  """
+  @spec verify_token(String.t()) :: {:ok, map()} | {:error, atom()}
+  def verify_token(token) do
+    # Get the GoTrue module (real or mocked)
+    gotrue = Application.get_env(:pantheon, :gotrue_module, Supabase.GoTrue)
+    client = Application.get_env(:pantheon, :supabase_client, Client)
+
+    case gotrue.get_user(client, token) do
+      {:ok, user_data} ->
+        {:ok, user_data}
+      {:error, %{"message" => "Token expired"}} ->
+        {:error, :token_expired}
+      {:error, _} ->
+        {:error, :invalid_token}
+    end
+  end
 end
