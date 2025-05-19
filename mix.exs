@@ -65,7 +65,12 @@ defmodule Pantheon.MixProject do
       {:ex_machina, "~> 2.7", only: [:dev, :test]},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.1", only: [:dev], runtime: false},
-      {:typed_struct, "~> 0.3.0"}
+      {:typed_struct, "~> 0.3.0"},
+
+      # Supabase Auth
+      {:supabase_gotrue, "~> 0.4.0"},  # Supabase Auth client
+      {:supabase_potion, "~> 0.6.0"},  # Required HTTP client for GoTrue
+      {:joken, "~> 2.5"},              # JWT token validation
     ]
   end
 

@@ -61,5 +61,10 @@ config :phoenix, :json_library, Jason
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
 
+# Import secrets configuration if exists
+if File.exists?("config/secrets.exs") do
+  import_config "secrets.exs"
+end
+
 # Import commanded config
 import_config "commanded.exs"

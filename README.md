@@ -6,6 +6,30 @@ A DDD Elixir Phoenix Nutrition Management System.
 
 Pantheon is a comprehensive nutrition management system that focuses on nutritionist-patient relationships. It enables nutritionists to track patient data over time, including profile information, body composition measurements, nutrition plans, and patient-reported wellness indicators.
 
+## Authentication Setup
+
+This project uses Supabase for authentication. To set up:
+
+1. Copy the template secrets file:
+   ```bash
+   cp config/secrets.exs.example config/secrets.exs
+   ```
+
+2. Edit `config/secrets.exs` with your actual Supabase credentials:
+   ```elixir
+   config :pantheon,
+     supabase_url: "https://your-actual-project.supabase.co",
+     supabase_key: "your-actual-supabase-anon-key"
+   ```
+
+3. You can obtain these credentials from your Supabase project dashboard:
+   - Go to https://app.supabase.com and select your project
+   - Navigate to Project Settings > API
+   - Use the Project URL for `supabase_url`
+   - Use the `anon` public key for `supabase_key`
+
+4. These credentials will be used for authentication but kept out of source control for security.
+
 ## Development Setup
 
 ### Prerequisites
