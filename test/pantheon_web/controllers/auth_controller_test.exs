@@ -119,4 +119,59 @@ defmodule PantheonWeb.AuthControllerTest do
       assert json_response(conn, 404)["errors"] != %{}
     end
   end
+
+  describe "magic_link/2" do
+    test "returns success when sending magic link", %{conn: conn} do
+      # Mock the auth service
+      mock_service = fn ->
+        defmodule MockMagicLinkService do
+          def sign_up(_, _), do: {:error, :not_found}  # Not used in this test
+          def sign_in(_, _), do: {:error, :not_found}  # Not used in this test
+
+          def send_magic_link("test@example.com") do
+            {:ok, "Magic link sent"}
+          end
+
+          def send_magic_link(_) do
+            {:error, :email_required}  # Use an existing error type
+          end
+        end
+
+        MockMagicLinkService
+      end.()
+
+      Application.put_env(:pantheon, :auth_service, mock_service)
+
+      conn = post(conn, ~p"/api/auth/magic-link", %{
+        email: "test@example.com"
+      })
+
+      assert %{"message" => "Magic link sent"} = json_response(conn, 200)["data"]
+    end
+
+    test "returns error when magic link fails", %{conn: conn} do
+      # Mock the auth service
+      mock_service = fn ->
+        defmodule MockFailMagicLinkService do
+          def sign_up(_, _), do: {:error, :not_found}  # Not used in this test
+          def sign_in(_, _), do: {:error, :not_found}  # Not used in this test
+
+          def send_magic_link(_) do
+            {:error, :email_required}  # Use an existing error type
+          end
+        end
+
+        MockFailMagicLinkService
+      end.()
+
+      Application.put_env(:pantheon, :auth_service, mock_service)
+
+      conn = post(conn, ~p"/api/auth/magic-link", %{
+        email: "wrong@example.com"
+      })
+
+      assert json_response(conn, 422)["errors"] != %{}
+      assert json_response(conn, 422)["errors"]["detail"] == "Email is required"
+    end
+  end
 end

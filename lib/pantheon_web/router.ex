@@ -31,6 +31,7 @@ defmodule PantheonWeb.Router do
 
     post "/register", AuthController, :register
     post "/login", AuthController, :login
+    post "/magic-link", AuthController, :magic_link
   end
 
   # Protected API endpoints (auth required)

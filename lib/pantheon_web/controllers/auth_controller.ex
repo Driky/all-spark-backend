@@ -23,4 +23,13 @@ defmodule PantheonWeb.AuthController do
       |> render(:token, data: result)
     end
   end
+
+  def magic_link(conn, %{"email" => email}) do
+    auth_service = Application.get_env(:pantheon, :auth_service, AuthService)
+
+    with {:ok, message} <- auth_service.send_magic_link(email) do
+      conn
+      |> render(:message, data: %{message: message})
+    end
+  end
 end
