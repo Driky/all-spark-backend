@@ -37,6 +37,14 @@ defmodule PantheonWeb.FallbackController do
     |> render(:error, status: :unprocessable_entity, message: "Email is required")
   end
 
+  # Invalid login credentials
+  def call(conn, {:error, "Invalid login credentials"}) do
+    conn
+    |> put_status(:unauthorized)
+    |> put_view(json: PantheonWeb.ErrorJSON)
+    |> render(:error, status: :unauthorized, message: "Invalid login credentials")
+  end
+
   # Fallback for all other errors
   def call(conn, {:error, _reason}) do
     conn

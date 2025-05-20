@@ -15,16 +15,16 @@ defmodule Pantheon.Auth.AuthServiceTest do
 
     def sign_in_with_password(_, %{email: "test@example.com", password: "password123"}) do
       {:ok, %{
-        "access_token" => "mock_token",
-        "user" => %{
-          "id" => "user-123",
-          "email" => "test@example.com"
+        access_token: "mock_token",
+        user: %{
+          id: "user-123",
+          email: "test@example.com"
         }
       }}
     end
 
     def sign_in_with_password(_, _) do
-      {:error, %{"message" => "Invalid credentials"}}
+      {:error, %{metadata: %{resp_body: %{"msg" => "Invalid login credentials"}}}}
     end
 
     def send_magic_link(_, %{email: "test@example.com"}) do
@@ -107,7 +107,7 @@ defmodule Pantheon.Auth.AuthServiceTest do
     end
 
     test "returns error with invalid credentials" do
-      assert {:error, "Invalid credentials"} =
+      assert {:error, "Invalid login credentials"} =
         AuthService.sign_in("test@example.com", "wrong")
     end
   end

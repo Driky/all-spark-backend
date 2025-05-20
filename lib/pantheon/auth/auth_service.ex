@@ -36,18 +36,21 @@ defmodule Pantheon.Auth.AuthService do
   def sign_in(email, password) do
     # Get the GoTrue module (real or mocked)
     gotrue = Application.get_env(:pantheon, :gotrue_module, Supabase.GoTrue)
-    client = Application.get_env(:pantheon, :supabase_client, Client)
+    clientModule = Application.get_env(:pantheon, :supabase_client, Client)
+    {:ok, client} = clientModule.get_client()
 
     params = %{email: email, password: password}
 
     case gotrue.sign_in_with_password(client, params) do
       {:ok, response} ->
+        IO.write("response: " <> inspect(response))
         {:ok, %{
-          token: response["access_token"],
-          user_id: response["user"]["id"]
+          token: response.access_token,
+          user_id: response.user.id
         }}
       {:error, error} ->
-        {:error, error["message"] || "Invalid credentials"}
+        IO.write("error: " <> inspect(error))
+        {:error, error.metadata.resp_body["msg"] || "Invalid credentials"}
     end
   end
 
