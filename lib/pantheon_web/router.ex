@@ -29,6 +29,7 @@ defmodule PantheonWeb.Router do
   scope "/api/auth", PantheonWeb do
     pipe_through :api
 
+    post "/register", AuthController, :register
   end
 
   # Protected API endpoints (auth required)
