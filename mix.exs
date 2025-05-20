@@ -69,7 +69,7 @@ defmodule Pantheon.MixProject do
 
       # Supabase Auth
       {:supabase_gotrue, "~> 0.4.0"},  # Supabase Auth client
-      {:supabase_potion, "~> 0.6.0"},  # Required HTTP client for GoTrue
+      {:supabase_potion, "0.6.2"},  # Required HTTP client for GoTrue
       {:joken, "~> 2.5"},              # JWT token validation
     ]
   end
