@@ -14,16 +14,27 @@ defmodule PantheonWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :auth do
+    plug :accepts, ["json"]
+    plug PantheonWeb.AuthPlug
+  end
+
   scope "/", PantheonWeb do
     pipe_through :browser
 
     get "/", PageController, :home
   end
 
-  scope "/api", PantheonWeb do
+  # Public API endpoints (no auth required)
+  scope "/api/auth", PantheonWeb do
     pipe_through :api
 
-    # Patient management routes
+  end
+
+  # Protected API endpoints (auth required)
+  scope "/api", PantheonWeb do
+    pipe_through [:api, :auth]
+
     resources "/patients", PatientController, except: [:new, :edit, :delete]
     get "/nutritionists/:nutritionist_id/patients", PatientController, :list_by_nutritionist
   end
