@@ -11,7 +11,7 @@ defmodule PantheonWeb.AuthController do
     with {:ok, result} <- auth_service.sign_up(email, password) do
       conn
       |> put_status(:created)
-      |> render(:token, data: result)
+      |> render(:user_id, data: result)
     end
   end
 

@@ -12,18 +12,20 @@ defmodule Pantheon.Auth.AuthService do
   def sign_up(email, password) do
     # Get the GoTrue module (real or mocked)
     gotrue = Application.get_env(:pantheon, :gotrue_module, Supabase.GoTrue)
-    client = Application.get_env(:pantheon, :supabase_client, Client)
+    clientModule = Application.get_env(:pantheon, :supabase_client, Client)
+    {:ok, client} = clientModule.get_client()
 
     params = %{email: email, password: password}
 
-    case gotrue.sign_up_with_password(client, params) do
+    case gotrue.sign_up(client, params) do
       {:ok, response} ->
+        IO.write("response: " <> inspect(response))
         {:ok, %{
-          token: response["access_token"],
-          user_id: response["user"]["id"]
+          user_id: response.id
         }}
       {:error, error} ->
-        {:error, error["message"] || "Signup failed"}
+        IO.write("error: " <> inspect(error.metadata.resp_body["message"]))
+        {:error, error.metadata.resp_body["message"] || "Signup failed"}
     end
   end
 

@@ -5,18 +5,12 @@ defmodule Pantheon.Auth.AuthServiceTest do
 
   # Create a mock module for testing
   defmodule MockGoTrue do
-    def sign_up_with_password(_, %{email: "test@example.com", password: "password123"}) do
-      {:ok, %{
-        "access_token" => "mock_token",
-        "user" => %{
-          "id" => "user-123",
-          "email" => "test@example.com"
-        }
-      }}
+    def sign_up(_, %{email: "test@example.com", password: "password123"}) do
+      {:ok, %{id: "user-123"}}
     end
 
-    def sign_up_with_password(_, _) do
-      {:error, %{"message" => "Invalid signup"}}
+    def sign_up(_, _) do
+      {:error, %{metadata: %{resp_body: %{"message" => "Invalid signup"}}}}
     end
 
     def sign_in_with_password(_, %{email: "test@example.com", password: "password123"}) do
@@ -120,7 +114,7 @@ defmodule Pantheon.Auth.AuthServiceTest do
 
   describe "sign_up/2" do
     test "returns ok with valid credentials" do
-      assert {:ok, %{token: "mock_token", user_id: "user-123"}} =
+      assert {:ok, %{user_id: "user-123"}} =
         AuthService.sign_up("test@example.com", "password123")
     end
 

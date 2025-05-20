@@ -20,7 +20,8 @@ defmodule Pantheon.Application do
       # {Pantheon.Worker, arg},
       # Start to serve requests, typically the last entry
       PantheonWeb.Endpoint,
-      Pantheon.PatientManagement.Projections.PatientProjector
+      Pantheon.PatientManagement.Projections.PatientProjector,
+      Pantheon.Supabase.Client
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
