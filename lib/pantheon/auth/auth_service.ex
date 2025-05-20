@@ -78,7 +78,9 @@ defmodule Pantheon.Auth.AuthService do
     gotrue = Application.get_env(:pantheon, :gotrue_module, Supabase.GoTrue)
     client = Application.get_env(:pantheon, :supabase_client, Client)
 
-    case gotrue.get_user(client, token) do
+    session = %Supabase.GoTrue.Session{access_token: token}
+
+    case gotrue.get_user(client, session) do
       {:ok, user_data} ->
         {:ok, user_data}
       {:error, %{"message" => "Token expired"}} ->

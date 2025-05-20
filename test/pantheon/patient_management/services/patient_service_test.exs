@@ -2,8 +2,6 @@ defmodule Pantheon.PatientManagement.Services.PatientServiceTest do
   use Pantheon.DataCase
 
   alias Pantheon.PatientManagement.Services.PatientService
-  alias Pantheon.PatientManagement.Projections.PatientProjection
-  alias Pantheon.Repo
 
   describe "register_patient/1" do
     test "successfully registers a patient" do

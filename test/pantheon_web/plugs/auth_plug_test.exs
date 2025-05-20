@@ -2,40 +2,41 @@ defmodule PantheonWeb.AuthPlugTest do
   use PantheonWeb.ConnCase, async: true
 
   alias PantheonWeb.AuthPlug
-  alias Pantheon.Auth.{AuthService, User}
+  alias Pantheon.Auth.User
 
-  # Create a mock module for testing
-  defmodule MockAuthService do
-    def verify_token("valid_token") do
-      {:ok, %{
-        "id" => "user-123",
-        "email" => "test@example.com",
-        "user_metadata" => %{
-          "full_name" => "Test User",
-          "role" => "nutritionist"
-        }
-      }}
-    end
-
-    def verify_token("expired_token") do
-      {:error, :token_expired}
-    end
-
-    def verify_token(_) do
-      {:error, :invalid_token}
-    end
-  end
+  # Mock tokens that we'll use in tests
+  @valid_token "valid.mock.token"
+  @invalid_token "invalid.token"
+  @expired_token "expired.token"
 
   setup %{conn: conn} do
-    # Store original module
-    original_auth_service = Application.get_env(:pantheon, :auth_service, AuthService)
+    # Mock the verify_token function
+    verify_token_fn = fn token ->
+      case token do
+        @valid_token ->
+          {:ok, %{
+            "id" => "user-123",
+            "email" => "test@example.com",
+            "user_metadata" => %{
+              "full_name" => "Test User",
+              "role" => "nutritionist"
+            }
+          }}
+        @expired_token ->
+          {:error, :token_expired}
+        @invalid_token ->
+          {:error, :invalid_token}
+        _ ->
+          {:error, :invalid_token}
+      end
+    end
 
-    # Set up mock module
-    Application.put_env(:pantheon, :auth_service, MockAuthService)
+    # Configure the application to use our mock
+    original_fn = Application.get_env(:pantheon, :verify_token_function)
+    Application.put_env(:pantheon, :verify_token_function, verify_token_fn)
 
     on_exit(fn ->
-      # Restore original module
-      Application.put_env(:pantheon, :auth_service, original_auth_service)
+      Application.put_env(:pantheon, :verify_token_function, original_fn)
     end)
 
     {:ok, conn: conn}
@@ -45,7 +46,7 @@ defmodule PantheonWeb.AuthPlugTest do
     test "adds current_user to conn", %{conn: conn} do
       conn =
         conn
-        |> put_req_header("authorization", "Bearer valid_token")
+        |> put_req_header("authorization", "Bearer #{@valid_token}")
         |> AuthPlug.call([])
 
       assert %User{} = conn.assigns.current_user
@@ -59,7 +60,7 @@ defmodule PantheonWeb.AuthPlugTest do
     test "halts the connection with 401 status", %{conn: conn} do
       conn =
         conn
-        |> put_req_header("authorization", "Bearer invalid_token")
+        |> put_req_header("authorization", "Bearer #{@invalid_token}")
         |> AuthPlug.call([])
 
       assert conn.halted
@@ -72,7 +73,7 @@ defmodule PantheonWeb.AuthPlugTest do
     test "halts the connection with 401 status and specific message", %{conn: conn} do
       conn =
         conn
-        |> put_req_header("authorization", "Bearer expired_token")
+        |> put_req_header("authorization", "Bearer #{@expired_token}")
         |> AuthPlug.call([])
 
       assert conn.halted

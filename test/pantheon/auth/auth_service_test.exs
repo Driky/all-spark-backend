@@ -41,7 +41,7 @@ defmodule Pantheon.Auth.AuthServiceTest do
       {:error, %{"message" => "Failed to send magic link"}}
     end
 
-    def get_user(_, "valid_token") do
+    def get_user(_client, %{access_token: "valid_token"}) do
       {:ok, %{
         "id" => "user-123",
         "email" => "test@example.com",
@@ -52,55 +52,12 @@ defmodule Pantheon.Auth.AuthServiceTest do
       }}
     end
 
-    def get_user(_, "expired_token") do
+    def get_user(_client, %{access_token: "expired_token"}) do
       {:error, %{"message" => "Token expired"}}
     end
 
     def get_user(_, _) do
       {:error, %{"message" => "Invalid token"}}
-    end
-  end
-
-  # Add to the existing test module:
-  describe "verify_token/1" do
-    test "returns user data with valid token" do
-      assert {:ok, user_data} = AuthService.verify_token("valid_token")
-      assert user_data["id"] == "user-123"
-      assert user_data["email"] == "test@example.com"
-    end
-
-    test "returns token_expired error when token is expired" do
-      assert {:error, :token_expired} = AuthService.verify_token("expired_token")
-    end
-
-    test "returns invalid_token error for other errors" do
-      assert {:error, :invalid_token} = AuthService.verify_token("invalid_token")
-    end
-  end
-
-  # Add to the existing test module:
-  describe "send_magic_link/1" do
-    test "returns success message when sending magic link" do
-      assert {:ok, "Magic link sent"} =
-        AuthService.send_magic_link("test@example.com")
-    end
-
-    test "returns error when magic link fails" do
-      assert {:error, "Failed to send magic link"} =
-        AuthService.send_magic_link("invalid@example.com")
-    end
-  end
-
-  # Add to the existing test module:
-  describe "sign_in/2" do
-    test "returns ok with valid credentials" do
-      assert {:ok, %{token: "mock_token", user_id: "user-123"}} =
-        AuthService.sign_in("test@example.com", "password123")
-    end
-
-    test "returns error with invalid credentials" do
-      assert {:error, "Invalid credentials"} =
-        AuthService.sign_in("test@example.com", "wrong")
     end
   end
 
@@ -119,6 +76,46 @@ defmodule Pantheon.Auth.AuthServiceTest do
     end)
 
     :ok
+  end
+
+  describe "verify_token/1" do
+    test "returns user data with valid token" do
+      assert {:ok, user_data} = AuthService.verify_token("valid_token")
+      assert user_data["id"] == "user-123"
+      assert user_data["email"] == "test@example.com"
+    end
+
+    test "returns token_expired error when token is expired" do
+      assert {:error, :token_expired} = AuthService.verify_token("expired_token")
+    end
+
+    test "returns invalid_token error for other errors" do
+      assert {:error, :invalid_token} = AuthService.verify_token("invalid_token")
+    end
+  end
+
+  describe "send_magic_link/1" do
+    test "returns success message when sending magic link" do
+      assert {:ok, "Magic link sent"} =
+        AuthService.send_magic_link("test@example.com")
+    end
+
+    test "returns error when magic link fails" do
+      assert {:error, "Failed to send magic link"} =
+        AuthService.send_magic_link("invalid@example.com")
+    end
+  end
+
+  describe "sign_in/2" do
+    test "returns ok with valid credentials" do
+      assert {:ok, %{token: "mock_token", user_id: "user-123"}} =
+        AuthService.sign_in("test@example.com", "password123")
+    end
+
+    test "returns error with invalid credentials" do
+      assert {:error, "Invalid credentials"} =
+        AuthService.sign_in("test@example.com", "wrong")
+    end
   end
 
   describe "sign_up/2" do

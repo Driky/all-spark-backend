@@ -40,8 +40,8 @@ defmodule PantheonWeb.AuthPlug do
   end
 
   defp verify_token(token) do
-    auth_service = Application.get_env(:pantheon, :auth_service, AuthService)
-    auth_service.verify_token(token)
+    verify_fn = Application.get_env(:pantheon, :verify_token_function, &AuthService.verify_token/1)
+    verify_fn.(token)
   end
 
   defp create_user(user_data) do

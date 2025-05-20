@@ -1,9 +1,6 @@
 defmodule PantheonWeb.PatientControllerTest do
   use PantheonWeb.ConnCase
 
-  import Pantheon.DataCase
-
-  alias Pantheon.PatientManagement.Projections.PatientProjection
   alias Pantheon.PatientManagement.Services.PatientService
 
   # We'll use this for testing
@@ -32,7 +29,35 @@ defmodule PantheonWeb.PatientControllerTest do
   }
 
   setup %{conn: conn} do
-    {:ok, conn: put_req_header(conn, "accept", "application/json")}
+    # Store original function
+    original_verify_token = Application.get_env(:pantheon, :verify_token_function)
+
+    # Use a function for mocking instead of a module
+    mock_verify_token = fn _token ->
+      {:ok, %{
+        "id" => "user-123",
+        "email" => "test@example.com",
+        "user_metadata" => %{
+          "full_name" => "Test User",
+          "role" => "nutritionist"
+        }
+      }}
+    end
+
+    Application.put_env(:pantheon, :verify_token_function, mock_verify_token)
+
+    on_exit(fn ->
+      # Restore original function
+      Application.put_env(:pantheon, :verify_token_function, original_verify_token)
+    end)
+
+    # Add auth token to conn
+    authed_conn =
+      conn
+      |> put_req_header("accept", "application/json")
+      |> put_req_header("authorization", "Bearer test_token")
+
+    {:ok, conn: authed_conn}
   end
 
   describe "index" do
