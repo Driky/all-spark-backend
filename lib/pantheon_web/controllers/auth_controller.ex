@@ -14,4 +14,13 @@ defmodule PantheonWeb.AuthController do
       |> render(:token, data: result)
     end
   end
+
+  def login(conn, %{"email" => email, "password" => password}) do
+    auth_service = Application.get_env(:pantheon, :auth_service, AuthService)
+
+    with {:ok, result} <- auth_service.sign_in(email, password) do
+      conn
+      |> render(:token, data: result)
+    end
+  end
 end

@@ -65,4 +65,58 @@ defmodule PantheonWeb.AuthControllerTest do
       assert json_response(conn, 422)["errors"]["detail"] == "Email is required"
     end
   end
+
+  describe "login/2" do
+    test "returns token when login succeeds", %{conn: conn} do
+      # Mock the auth service
+      mock_service = fn ->
+        defmodule MockLoginService do
+          def sign_up(_, _), do: {:error, :not_found}  # Not used in this test
+
+          def sign_in("test@example.com", "password123") do
+            {:ok, %{token: "mock_token", user_id: "user-123"}}
+          end
+
+          def sign_in(_, _) do
+            {:error, :not_found}  # Use an existing error type
+          end
+        end
+
+        MockLoginService
+      end.()
+
+      Application.put_env(:pantheon, :auth_service, mock_service)
+
+      conn = post(conn, ~p"/api/auth/login", %{
+        email: "test@example.com",
+        password: "password123"
+      })
+
+      assert %{"token" => "mock_token", "user_id" => "user-123"} = json_response(conn, 200)["data"]
+    end
+
+    test "returns error when login fails", %{conn: conn} do
+      # Mock the auth service
+      mock_service = fn ->
+        defmodule MockFailLoginService do
+          def sign_up(_, _), do: {:error, :not_found}  # Not used in this test
+
+          def sign_in(_, _) do
+            {:error, :not_found}  # Use an existing error type
+          end
+        end
+
+        MockFailLoginService
+      end.()
+
+      Application.put_env(:pantheon, :auth_service, mock_service)
+
+      conn = post(conn, ~p"/api/auth/login", %{
+        email: "test@example.com",
+        password: "wrong"
+      })
+
+      assert json_response(conn, 404)["errors"] != %{}
+    end
+  end
 end
