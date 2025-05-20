@@ -17,6 +17,10 @@ defmodule PantheonWeb.AuthPlugTest do
       }}
     end
 
+    def verify_token("expired_token") do
+      {:error, :token_expired}
+    end
+
     def verify_token(_) do
       {:error, :invalid_token}
     end
@@ -48,6 +52,42 @@ defmodule PantheonWeb.AuthPlugTest do
       assert conn.assigns.current_user.id == "user-123"
       assert conn.assigns.current_user.email == "test@example.com"
       refute conn.halted
+    end
+  end
+
+  describe "call/2 with invalid token" do
+    test "halts the connection with 401 status", %{conn: conn} do
+      conn =
+        conn
+        |> put_req_header("authorization", "Bearer invalid_token")
+        |> AuthPlug.call([])
+
+      assert conn.halted
+      assert conn.status == 401
+      assert Jason.decode!(conn.resp_body) == %{"errors" => %{"detail" => "Invalid token", "status" => 401}}
+    end
+  end
+
+  describe "call/2 with expired token" do
+    test "halts the connection with 401 status and specific message", %{conn: conn} do
+      conn =
+        conn
+        |> put_req_header("authorization", "Bearer expired_token")
+        |> AuthPlug.call([])
+
+      assert conn.halted
+      assert conn.status == 401
+      assert Jason.decode!(conn.resp_body) == %{"errors" => %{"detail" => "Token expired", "status" => 401}}
+    end
+  end
+
+  describe "call/2 with missing token" do
+    test "halts the connection with 401 status", %{conn: conn} do
+      conn = AuthPlug.call(conn, [])
+
+      assert conn.halted
+      assert conn.status == 401
+      assert Jason.decode!(conn.resp_body) == %{"errors" => %{"detail" => "Missing authorization token", "status" => 401}}
     end
   end
 end

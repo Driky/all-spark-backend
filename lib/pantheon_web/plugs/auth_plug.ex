@@ -14,16 +14,21 @@ defmodule PantheonWeb.AuthPlug do
          {:ok, user} <- create_user(user_data) do
       assign(conn, :current_user, user)
     else
+      {:error, :missing_token} ->
+        conn
+        |> send_error_resp(401, "Missing authorization token")
+
+      {:error, :invalid_token} ->
+        conn
+        |> send_error_resp(401, "Invalid token")
+
+      {:error, :token_expired} ->
+        conn
+        |> send_error_resp(401, "Token expired")
+
       _ ->
         conn
-        |> put_resp_content_type("application/json")
-        |> send_resp(401, Jason.encode!(%{
-            errors: %{
-              detail: "Unauthorized",
-              status: 401
-            }
-          }))
-        |> halt()
+        |> send_error_resp(401, "Unauthorized")
     end
   end
 
@@ -41,5 +46,17 @@ defmodule PantheonWeb.AuthPlug do
 
   defp create_user(user_data) do
     {:ok, User.from_supabase(user_data)}
+  end
+
+  defp send_error_resp(conn, status, message) do
+    conn
+    |> put_resp_content_type("application/json")
+    |> send_resp(status, Jason.encode!(%{
+        errors: %{
+          detail: message,
+          status: status
+        }
+      }))
+    |> halt()
   end
 end
