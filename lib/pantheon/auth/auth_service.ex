@@ -19,12 +19,10 @@ defmodule Pantheon.Auth.AuthService do
 
     case gotrue.sign_up(client, params) do
       {:ok, response} ->
-        IO.write("response: " <> inspect(response))
         {:ok, %{
           user_id: response.id
         }}
       {:error, error} ->
-        IO.write("error: " <> inspect(error.metadata.resp_body["message"]))
         {:error, error.metadata.resp_body["message"] || "Signup failed"}
     end
   end
@@ -43,13 +41,11 @@ defmodule Pantheon.Auth.AuthService do
 
     case gotrue.sign_in_with_password(client, params) do
       {:ok, response} ->
-        IO.write("response: " <> inspect(response))
         {:ok, %{
           token: response.access_token,
           user_id: response.user.id
         }}
       {:error, error} ->
-        IO.write("error: " <> inspect(error))
         {:error, error.metadata.resp_body["msg"] || "Invalid credentials"}
     end
   end
