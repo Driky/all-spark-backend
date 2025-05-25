@@ -66,6 +66,7 @@ defmodule Pantheon.MixProject do
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.1", only: [:dev], runtime: false},
       {:typed_struct, "~> 0.3.0"},
+      {:uuid, "~> 1.1"},
 
       # Supabase Auth
       {:supabase_gotrue, "~> 0.4.0"},  # Supabase Auth client
