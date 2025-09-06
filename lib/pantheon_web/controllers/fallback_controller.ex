@@ -13,22 +13,6 @@ defmodule PantheonWeb.FallbackController do
     |> render(:error, status: :not_found, message: "Resource not found")
   end
 
-  # Invalid patient data
-  def call(conn, {:error, :invalid_patient_data}) do
-    conn
-    |> put_status(:unprocessable_entity)
-    |> put_view(json: PantheonWeb.ErrorJSON)
-    |> render(:error, status: :unprocessable_entity, message: "Invalid patient data")
-  end
-
-  # Invalid patient ID
-  def call(conn, {:error, :invalid_patient_id}) do
-    conn
-    |> put_status(:bad_request)
-    |> put_view(json: PantheonWeb.ErrorJSON)
-    |> render(:error, status: :bad_request, message: "Invalid patient ID format")
-  end
-
   # Email required
   def call(conn, {:error, :email_required}) do
     conn

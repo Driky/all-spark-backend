@@ -38,8 +38,8 @@ defmodule PantheonWeb.Router do
   scope "/api", PantheonWeb do
     pipe_through [:api, :auth]
 
-    resources "/patients", PatientController, except: [:new, :edit, :delete]
-    get "/nutritionists/:nutritionist_id/patients", PatientController, :list_by_nutritionist
+    #resources "/patients", PatientController, except: [:new, :edit, :delete]
+    #get "/nutritionists/:nutritionist_id/patients", PatientController, :list_by_nutritionist
   end
 
 end

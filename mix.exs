@@ -55,12 +55,6 @@ defmodule Pantheon.MixProject do
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.5"},
 
-      # Event Sourcing & CQRS
-      {:commanded, "~> 1.4"},
-      {:commanded_eventstore_adapter, "~> 1.2"},
-      {:commanded_ecto_projections, "~> 1.4"},
-      {:eventstore, "~> 1.3"},
-
       # Utilities
       {:ex_machina, "~> 2.7", only: [:dev, :test]},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
