@@ -34,21 +34,21 @@ AllSpark is a bootstraping project. It will be used as the base for future proje
    mix deps.get
    ```
 
-4. Create and migrate the database:
+4. Configure Supabase authentication:
+   ```bash
+   cp config/secrets.exs.example config/secrets.exs
+   ```
+   Then edit `config/secrets.exs` with your actual Supabase credentials
+
+5. Create and migrate the database:
    ```bash
    mix ecto.setup
    ```
 
-5. Run migrations if you've added new ones:
+6 Run migrations if you've added new ones:
    ```bash
    mix ecto.migrate
    ```
-
-6. Configure Supabase authentication:
-   ```bash
-   cp config/secrets.exs.example config/secrets.exs
-   ```
-   Then edit `config/secrets.exs` with your actual Supabase credentials.
 
 7. Start the Phoenix server:
    ```bash
