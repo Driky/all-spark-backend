@@ -44,7 +44,7 @@ AllSpark is a bootstraping project. It will be used as the base for future proje
    mix ecto.migrate
    ```
 
-66. Configure Supabase authentication:
+6. Configure Supabase authentication:
    ```bash
    cp config/secrets.exs.example config/secrets.exs
    ```
