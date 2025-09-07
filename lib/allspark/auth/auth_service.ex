@@ -12,16 +12,18 @@ defmodule Allspark.Auth.AuthService do
   def sign_up(email, password) do
     # Get the GoTrue module (real or mocked)
     gotrue = Application.get_env(:allspark, :gotrue_module, Supabase.GoTrue)
-    clientModule = Application.get_env(:allspark, :supabase_client, Client)
-    {:ok, client} = clientModule.get_client()
+    client_module = Application.get_env(:allspark, :supabase_client, Client)
+    {:ok, client} = client_module.get_client()
 
     params = %{email: email, password: password}
 
     case gotrue.sign_up(client, params) do
       {:ok, response} ->
-        {:ok, %{
-          user_id: response.id
-        }}
+        {:ok,
+         %{
+           user_id: response.id
+         }}
+
       {:error, error} ->
         {:error, error.metadata.resp_body["message"] || "Signup failed"}
     end
@@ -34,17 +36,19 @@ defmodule Allspark.Auth.AuthService do
   def sign_in(email, password) do
     # Get the GoTrue module (real or mocked)
     gotrue = Application.get_env(:allspark, :gotrue_module, Supabase.GoTrue)
-    clientModule = Application.get_env(:allspark, :supabase_client, Client)
-    {:ok, client} = clientModule.get_client()
+    client_module = Application.get_env(:allspark, :supabase_client, Client)
+    {:ok, client} = client_module.get_client()
 
     params = %{email: email, password: password}
 
     case gotrue.sign_in_with_password(client, params) do
       {:ok, response} ->
-        {:ok, %{
-          token: response.access_token,
-          user_id: response.user.id
-        }}
+        {:ok,
+         %{
+           token: response.access_token,
+           user_id: response.user.id
+         }}
+
       {:error, error} ->
         {:error, error.metadata.resp_body["msg"] || "Invalid credentials"}
     end
@@ -57,13 +61,15 @@ defmodule Allspark.Auth.AuthService do
   def send_magic_link(email) do
     # Get the GoTrue module (real or mocked)
     gotrue = Application.get_env(:allspark, :gotrue_module, Supabase.GoTrue)
-    client = Application.get_env(:allspark, :supabase_client, Client)
+    client_module = Application.get_env(:allspark, :supabase_client, Client)
+    {:ok, client} = client_module.get_client()
 
     params = %{email: email}
 
     case gotrue.send_magic_link(client, params) do
       {:ok, response} ->
         {:ok, response["message"] || "Magic link sent"}
+
       {:error, error} ->
         {:error, error["message"] || "Failed to send magic link"}
     end
@@ -77,15 +83,18 @@ defmodule Allspark.Auth.AuthService do
   def verify_token(token) do
     # Get the GoTrue module (real or mocked)
     gotrue = Application.get_env(:allspark, :gotrue_module, Supabase.GoTrue)
-    client = Application.get_env(:allspark, :supabase_client, Client)
+    client_module = Application.get_env(:allspark, :supabase_client, Client)
+    {:ok, client} = client_module.get_client()
 
     session = %Supabase.GoTrue.Session{access_token: token}
 
     case gotrue.get_user(client, session) do
       {:ok, user_data} ->
         {:ok, user_data}
+
       {:error, %{"message" => "Token expired"}} ->
         {:error, :token_expired}
+
       {:error, _} ->
         {:error, :invalid_token}
     end
