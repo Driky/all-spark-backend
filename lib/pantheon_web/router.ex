@@ -1,11 +1,11 @@
-defmodule PantheonWeb.Router do
-  use PantheonWeb, :router
+defmodule AllsparkWeb.Router do
+  use AllsparkWeb, :router
 
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_live_flash
-    plug :put_root_layout, html: {PantheonWeb.Layouts, :root}
+    plug :put_root_layout, html: {AllsparkWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
   end
@@ -16,17 +16,17 @@ defmodule PantheonWeb.Router do
 
   pipeline :auth do
     plug :accepts, ["json"]
-    plug PantheonWeb.AuthPlug
+    plug AllsparkWeb.AuthPlug
   end
 
-  scope "/", PantheonWeb do
+  scope "/", AllsparkWeb do
     pipe_through :browser
 
     get "/", PageController, :home
   end
 
   # Public API endpoints (no auth required)
-  scope "/api/auth", PantheonWeb do
+  scope "/api/auth", AllsparkWeb do
     pipe_through :api
 
     post "/register", AuthController, :register
@@ -35,7 +35,7 @@ defmodule PantheonWeb.Router do
   end
 
   # Protected API endpoints (auth required)
-  scope "/api", PantheonWeb do
+  scope "/api", AllsparkWeb do
     pipe_through [:api, :auth]
 
     #resources "/patients", PatientController, except: [:new, :edit, :delete]

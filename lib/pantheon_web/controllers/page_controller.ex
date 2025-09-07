@@ -1,5 +1,5 @@
-defmodule PantheonWeb.PageController do
-  use PantheonWeb, :controller
+defmodule AllsparkWeb.PageController do
+  use AllsparkWeb, :controller
 
   def home(conn, _params) do
     # The home page is often custom made,

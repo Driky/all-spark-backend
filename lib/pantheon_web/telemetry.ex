@@ -1,4 +1,4 @@
-defmodule PantheonWeb.Telemetry do
+defmodule AllsparkWeb.Telemetry do
   use Supervisor
   import Telemetry.Metrics
 
@@ -53,23 +53,23 @@ defmodule PantheonWeb.Telemetry do
       ),
 
       # Database Metrics
-      summary("pantheon.repo.query.total_time",
+      summary("allspark.repo.query.total_time",
         unit: {:native, :millisecond},
         description: "The sum of the other measurements"
       ),
-      summary("pantheon.repo.query.decode_time",
+      summary("allspark.repo.query.decode_time",
         unit: {:native, :millisecond},
         description: "The time spent decoding the data received from the database"
       ),
-      summary("pantheon.repo.query.query_time",
+      summary("allspark.repo.query.query_time",
         unit: {:native, :millisecond},
         description: "The time spent executing the query"
       ),
-      summary("pantheon.repo.query.queue_time",
+      summary("allspark.repo.query.queue_time",
         unit: {:native, :millisecond},
         description: "The time spent waiting for a database connection"
       ),
-      summary("pantheon.repo.query.idle_time",
+      summary("allspark.repo.query.idle_time",
         unit: {:native, :millisecond},
         description:
           "The time the connection spent waiting before being checked out for the query"
@@ -87,7 +87,7 @@ defmodule PantheonWeb.Telemetry do
     [
       # A module, function and arguments to be invoked periodically.
       # This function must call :telemetry.execute/3 and a metric must be added above.
-      # {PantheonWeb, :count_users, []}
+      # {AllsparkWeb, :count_users, []}
     ]
   end
 end

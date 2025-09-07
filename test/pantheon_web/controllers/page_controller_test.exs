@@ -1,5 +1,5 @@
-defmodule PantheonWeb.PageControllerTest do
-  use PantheonWeb.ConnCase
+defmodule AllsparkWeb.PageControllerTest do
+  use AllsparkWeb.ConnCase
 
   test "GET /", %{conn: conn} do
     conn = get(conn, ~p"/")

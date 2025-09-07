@@ -1,4 +1,4 @@
-defmodule Pantheon.DataCase do
+defmodule Allspark.DataCase do
   @moduledoc """
   This module defines the setup for tests requiring
   access to the application's data layer.
@@ -10,7 +10,7 @@ defmodule Pantheon.DataCase do
   we enable the SQL sandbox, so changes done to the database
   are reverted at the end of every test. If you are using
   PostgreSQL, you can even run database tests asynchronously
-  by setting `use Pantheon.DataCase, async: true`, although
+  by setting `use Allspark.DataCase, async: true`, although
   this option is not recommended for other databases.
   """
 
@@ -18,17 +18,17 @@ defmodule Pantheon.DataCase do
 
   using do
     quote do
-      alias Pantheon.Repo
+      alias Allspark.Repo
 
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
-      import Pantheon.DataCase
+      import Allspark.DataCase
     end
   end
 
   setup tags do
-    Pantheon.DataCase.setup_sandbox(tags)
+    Allspark.DataCase.setup_sandbox(tags)
     :ok
   end
 
@@ -36,10 +36,10 @@ defmodule Pantheon.DataCase do
   Sets up the sandbox based on the test tags.
   """
   def setup_sandbox(tags) do
-    pid = Ecto.Adapters.SQL.Sandbox.start_owner!(Pantheon.Repo, shared: not tags[:async])
+    pid = Ecto.Adapters.SQL.Sandbox.start_owner!(Allspark.Repo, shared: not tags[:async])
 
     # Clear projection versions table for tests
-    Pantheon.Repo.delete_all("projection_versions")
+    Allspark.Repo.delete_all("projection_versions")
 
     on_exit(fn -> Ecto.Adapters.SQL.Sandbox.stop_owner(pid) end)
   end

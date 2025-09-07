@@ -1,7 +1,7 @@
-defmodule Pantheon.Auth.UserTest do
+defmodule Allspark.Auth.UserTest do
   use ExUnit.Case, async: true
 
-  alias Pantheon.Auth.User
+  alias Allspark.Auth.User
 
   describe "from_supabase/1" do
     test "creates a user struct from Supabase user data" do

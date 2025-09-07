@@ -1,8 +1,8 @@
-defmodule PantheonWeb.AuthPlugTest do
-  use PantheonWeb.ConnCase, async: true
+defmodule AllsparkWeb.AuthPlugTest do
+  use AllsparkWeb.ConnCase, async: true
 
-  alias PantheonWeb.AuthPlug
-  alias Pantheon.Auth.User
+  alias AllsparkWeb.AuthPlug
+  alias Allspark.Auth.User
 
   # Mock tokens that we'll use in tests
   @valid_token "valid.mock.token"
@@ -32,11 +32,11 @@ defmodule PantheonWeb.AuthPlugTest do
     end
 
     # Configure the application to use our mock
-    original_fn = Application.get_env(:pantheon, :verify_token_function)
-    Application.put_env(:pantheon, :verify_token_function, verify_token_fn)
+    original_fn = Application.get_env(:allspark, :verify_token_function)
+    Application.put_env(:allspark, :verify_token_function, verify_token_fn)
 
     on_exit(fn ->
-      Application.put_env(:pantheon, :verify_token_function, original_fn)
+      Application.put_env(:allspark, :verify_token_function, original_fn)
     end)
 
     {:ok, conn: conn}

@@ -1,10 +1,10 @@
-defmodule PantheonWeb.AuthPlug do
+defmodule AllsparkWeb.AuthPlug do
   @moduledoc """
   Plug for authenticating requests using Supabase JWT tokens.
   """
   import Plug.Conn
 
-  alias Pantheon.Auth.{AuthService, User}
+  alias Allspark.Auth.{AuthService, User}
 
   def init(opts), do: opts
 
@@ -40,7 +40,7 @@ defmodule PantheonWeb.AuthPlug do
   end
 
   defp verify_token(token) do
-    verify_fn = Application.get_env(:pantheon, :verify_token_function, &AuthService.verify_token/1)
+    verify_fn = Application.get_env(:allspark, :verify_token_function, &AuthService.verify_token/1)
     verify_fn.(token)
   end
 

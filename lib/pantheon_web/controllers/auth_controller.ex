@@ -1,12 +1,12 @@
-defmodule PantheonWeb.AuthController do
-  use PantheonWeb, :controller
+defmodule AllsparkWeb.AuthController do
+  use AllsparkWeb, :controller
 
-  alias Pantheon.Auth.AuthService
+  alias Allspark.Auth.AuthService
 
-  action_fallback PantheonWeb.FallbackController
+  action_fallback AllsparkWeb.FallbackController
 
   def register(conn, %{"email" => email, "password" => password}) do
-    auth_service = Application.get_env(:pantheon, :auth_service, AuthService)
+    auth_service = Application.get_env(:allspark, :auth_service, AuthService)
 
     with {:ok, result} <- auth_service.sign_up(email, password) do
       conn
@@ -16,7 +16,7 @@ defmodule PantheonWeb.AuthController do
   end
 
   def login(conn, %{"email" => email, "password" => password}) do
-    auth_service = Application.get_env(:pantheon, :auth_service, AuthService)
+    auth_service = Application.get_env(:allspark, :auth_service, AuthService)
 
     with {:ok, result} <- auth_service.sign_in(email, password) do
       conn
@@ -25,7 +25,7 @@ defmodule PantheonWeb.AuthController do
   end
 
   def magic_link(conn, %{"email" => email}) do
-    auth_service = Application.get_env(:pantheon, :auth_service, AuthService)
+    auth_service = Application.get_env(:allspark, :auth_service, AuthService)
 
     with {:ok, message} <- auth_service.send_magic_link(email) do
       conn

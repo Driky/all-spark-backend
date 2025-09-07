@@ -7,27 +7,25 @@
 # General application configuration
 import Config
 
-config :pantheon,
-  ecto_repos: [Pantheon.Repo],
+config :allpsark,
+  ecto_repos: [Allspark.Repo],
   generators: [timestamp_type: :utc_datetime, binary_id: true]
 
 # Configures the endpoint
-config :pantheon, PantheonWeb.Endpoint,
+config :allpsark, AllsparkWeb.Endpoint,
   url: [host: "localhost"],
   adapter: Bandit.PhoenixAdapter,
   render_errors: [
-    formats: [html: PantheonWeb.ErrorHTML, json: PantheonWeb.ErrorJSON],
+    formats: [html: AllsparkWeb.ErrorHTML, json: AllsparkWeb.ErrorJSON],
     layout: false
   ],
-  pubsub_server: Pantheon.PubSub,
+  pubsub_server: Allspark.PubSub,
   live_view: [signing_salt: "ZuecMYks"]
-
-config :pantheon, event_stores: [Pantheon.EventStore]
 
 # Configure esbuild (the version is required)
 config :esbuild,
   version: "0.17.11",
-  pantheon: [
+  allpsark: [
     args:
       ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
     cd: Path.expand("../assets", __DIR__),
@@ -37,7 +35,7 @@ config :esbuild,
 # Configure tailwind (the version is required)
 config :tailwind,
   version: "3.4.3",
-  pantheon: [
+  allpsark: [
     args: ~w(
       --config=tailwind.config.js
       --input=css/app.css

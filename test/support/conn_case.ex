@@ -1,4 +1,4 @@
-defmodule PantheonWeb.ConnCase do
+defmodule AllsparkWeb.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -11,7 +11,7 @@ defmodule PantheonWeb.ConnCase do
   we enable the SQL sandbox, so changes done to the database
   are reverted at the end of every test. If you are using
   PostgreSQL, you can even run database tests asynchronously
-  by setting `use PantheonWeb.ConnCase, async: true`, although
+  by setting `use AllsparkWeb.ConnCase, async: true`, although
   this option is not recommended for other databases.
   """
 
@@ -20,19 +20,19 @@ defmodule PantheonWeb.ConnCase do
   using do
     quote do
       # The default endpoint for testing
-      @endpoint PantheonWeb.Endpoint
+      @endpoint AllsparkWeb.Endpoint
 
-      use PantheonWeb, :verified_routes
+      use AllsparkWeb, :verified_routes
 
       # Import conveniences for testing with connections
       import Plug.Conn
       import Phoenix.ConnTest
-      import PantheonWeb.ConnCase
+      import AllsparkWeb.ConnCase
     end
   end
 
   setup tags do
-    Pantheon.DataCase.setup_sandbox(tags)
+    Allspark.DataCase.setup_sandbox(tags)
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
 end

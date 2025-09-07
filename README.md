@@ -1,10 +1,10 @@
-# Pantheon
+# Allspark
 
-A DDD Elixir Phoenix Nutrition Management System.
+A DDD Elixir Phoenix a bootstraping project.
 
 ## Project Overview
 
-Pantheon is a comprehensive nutrition management system that focuses on nutritionist-patient relationships. It enables nutritionists to track patient data over time, including profile information, body composition measurements, nutrition plans, and patient-reported wellness indicators.
+AllSpark is a bootstraping project. It will be used as the base for future projects.
 
 ## Development Setup
 
@@ -153,7 +153,7 @@ all-spark-backend follows Domain-Driven Design principles.
 
 ## Authentication
 
-Pantheon uses Supabase for authentication. The following methods are supported:
+Allspark uses Supabase for authentication. The following methods are supported:
 
 - Email/password authentication
 - Magic link (passwordless) authentication

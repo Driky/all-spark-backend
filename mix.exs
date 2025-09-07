@@ -1,9 +1,9 @@
-defmodule Pantheon.MixProject do
+defmodule Allspark.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :pantheon,
+      app: :allspark,
       version: "0.1.0",
       elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
@@ -18,7 +18,7 @@ defmodule Pantheon.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {Pantheon.Application, []},
+      mod: {Allspark.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end
@@ -82,10 +82,10 @@ defmodule Pantheon.MixProject do
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
-      "assets.build": ["tailwind pantheon", "esbuild pantheon"],
+      "assets.build": ["tailwind allspark", "esbuild allspark"],
       "assets.deploy": [
-        "tailwind pantheon --minify",
-        "esbuild pantheon --minify",
+        "tailwind allspark --minify",
+        "esbuild allspark --minify",
         "phx.digest"
       ]
     ]

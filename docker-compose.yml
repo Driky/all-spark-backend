@@ -6,7 +6,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_MULTIPLE_DATABASES: pantheon_dev,pantheon_test,pantheon_eventstore_dev,pantheon_eventstore_test
+      POSTGRES_MULTIPLE_DATABASES: allspark_dev,allspark_test
     ports:
       - "5432:5432"
     volumes:

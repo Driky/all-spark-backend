@@ -1,6 +1,6 @@
-defmodule Pantheon do
+defmodule Allspark do
   @moduledoc """
-  Pantheon keeps the contexts that define your domain
+  Allspark keeps the contexts that define your domain
   and business logic.
 
   Contexts are also responsible for managing your data, regardless

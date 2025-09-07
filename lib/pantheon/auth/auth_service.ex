@@ -1,9 +1,9 @@
-defmodule Pantheon.Auth.AuthService do
+defmodule Allspark.Auth.AuthService do
   @moduledoc """
   Handles authentication via Supabase.
   """
 
-  alias Pantheon.Supabase.Client
+  alias Allspark.Supabase.Client
 
   @doc """
   Signs up a new user with email and password.
@@ -11,8 +11,8 @@ defmodule Pantheon.Auth.AuthService do
   @spec sign_up(String.t(), String.t()) :: {:ok, map()} | {:error, String.t()}
   def sign_up(email, password) do
     # Get the GoTrue module (real or mocked)
-    gotrue = Application.get_env(:pantheon, :gotrue_module, Supabase.GoTrue)
-    clientModule = Application.get_env(:pantheon, :supabase_client, Client)
+    gotrue = Application.get_env(:allspark, :gotrue_module, Supabase.GoTrue)
+    clientModule = Application.get_env(:allspark, :supabase_client, Client)
     {:ok, client} = clientModule.get_client()
 
     params = %{email: email, password: password}
@@ -33,8 +33,8 @@ defmodule Pantheon.Auth.AuthService do
   @spec sign_in(String.t(), String.t()) :: {:ok, map()} | {:error, String.t()}
   def sign_in(email, password) do
     # Get the GoTrue module (real or mocked)
-    gotrue = Application.get_env(:pantheon, :gotrue_module, Supabase.GoTrue)
-    clientModule = Application.get_env(:pantheon, :supabase_client, Client)
+    gotrue = Application.get_env(:allspark, :gotrue_module, Supabase.GoTrue)
+    clientModule = Application.get_env(:allspark, :supabase_client, Client)
     {:ok, client} = clientModule.get_client()
 
     params = %{email: email, password: password}
@@ -56,8 +56,8 @@ defmodule Pantheon.Auth.AuthService do
   @spec send_magic_link(String.t()) :: {:ok, String.t()} | {:error, String.t()}
   def send_magic_link(email) do
     # Get the GoTrue module (real or mocked)
-    gotrue = Application.get_env(:pantheon, :gotrue_module, Supabase.GoTrue)
-    client = Application.get_env(:pantheon, :supabase_client, Client)
+    gotrue = Application.get_env(:allspark, :gotrue_module, Supabase.GoTrue)
+    client = Application.get_env(:allspark, :supabase_client, Client)
 
     params = %{email: email}
 
@@ -76,8 +76,8 @@ defmodule Pantheon.Auth.AuthService do
   @spec verify_token(String.t()) :: {:ok, map()} | {:error, atom()}
   def verify_token(token) do
     # Get the GoTrue module (real or mocked)
-    gotrue = Application.get_env(:pantheon, :gotrue_module, Supabase.GoTrue)
-    client = Application.get_env(:pantheon, :supabase_client, Client)
+    gotrue = Application.get_env(:allspark, :gotrue_module, Supabase.GoTrue)
+    client = Application.get_env(:allspark, :supabase_client, Client)
 
     session = %Supabase.GoTrue.Session{access_token: token}
 

@@ -1,4 +1,4 @@
-defmodule PantheonWeb.AuthJSON do
+defmodule AllsparkWeb.AuthJSON do
   @moduledoc """
   JSON view for auth responses.
   """

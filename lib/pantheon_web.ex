@@ -1,12 +1,12 @@
-defmodule PantheonWeb do
+defmodule AllsparkWeb do
   @moduledoc """
   The entrypoint for defining your web interface, such
   as controllers, components, channels, and so on.
 
   This can be used in your application as:
 
-      use PantheonWeb, :controller
-      use PantheonWeb, :html
+      use AllsparkWeb, :controller
+      use AllsparkWeb, :html
 
   The definitions below will be executed for every controller,
   component, etc, so keep them short and clean, focused
@@ -40,7 +40,7 @@ defmodule PantheonWeb do
     quote do
       use Phoenix.Controller,
         formats: [:html, :json],
-        layouts: [html: PantheonWeb.Layouts]
+        layouts: [html: AllsparkWeb.Layouts]
 
       import Plug.Conn
 
@@ -51,7 +51,7 @@ defmodule PantheonWeb do
   def live_view do
     quote do
       use Phoenix.LiveView,
-        layout: {PantheonWeb.Layouts, :app}
+        layout: {AllsparkWeb.Layouts, :app}
 
       unquote(html_helpers())
     end
@@ -83,7 +83,7 @@ defmodule PantheonWeb do
       # HTML escaping functionality
       import Phoenix.HTML
       # Core UI components
-      import PantheonWeb.CoreComponents
+      import AllsparkWeb.CoreComponents
 
       # Shortcut for generating JS commands
       alias Phoenix.LiveView.JS
@@ -96,9 +96,9 @@ defmodule PantheonWeb do
   def verified_routes do
     quote do
       use Phoenix.VerifiedRoutes,
-        endpoint: PantheonWeb.Endpoint,
-        router: PantheonWeb.Router,
-        statics: PantheonWeb.static_paths()
+        endpoint: AllsparkWeb.Endpoint,
+        router: AllsparkWeb.Router,
+        statics: AllsparkWeb.static_paths()
     end
   end
 

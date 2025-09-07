@@ -1,7 +1,7 @@
-defmodule PantheonWeb.AuthJSONTest do
-  use PantheonWeb.ConnCase, async: true
+defmodule AllsparkWeb.AuthJSONTest do
+  use AllsparkWeb.ConnCase, async: true
 
-  alias PantheonWeb.AuthJSON
+  alias AllsparkWeb.AuthJSON
 
   test "token/1 renders token data" do
     token_data = %{

@@ -1,4 +1,4 @@
-defmodule PantheonWeb.CoreComponents do
+defmodule AllsparkWeb.CoreComponents do
   @moduledoc """
   Provides core UI components.
 
@@ -653,9 +653,9 @@ defmodule PantheonWeb.CoreComponents do
     # uncommenting and adjusting the following code:
 
     # if count = opts[:count] do
-    #   Gettext.dngettext(PantheonWeb.Gettext, "errors", msg, msg, count, opts)
+    #   Gettext.dngettext(AllsparkWeb.Gettext, "errors", msg, msg, count, opts)
     # else
-    #   Gettext.dgettext(PantheonWeb.Gettext, "errors", msg, opts)
+    #   Gettext.dgettext(AllsparkWeb.Gettext, "errors", msg, opts)
     # end
 
     Enum.reduce(opts, msg, fn {key, value}, acc ->

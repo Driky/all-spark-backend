@@ -1,15 +1,15 @@
-defmodule PantheonWeb.AuthControllerTest do
-  use PantheonWeb.ConnCase
+defmodule AllsparkWeb.AuthControllerTest do
+  use AllsparkWeb.ConnCase
 
-  alias Pantheon.Auth.AuthService
+  alias Allspark.Auth.AuthService
 
   setup %{conn: conn} do
     # Store original module
-    original_auth_service = Application.get_env(:pantheon, :auth_service, AuthService)
+    original_auth_service = Application.get_env(:allspark, :auth_service, AuthService)
 
     on_exit(fn ->
       # Restore original module
-      Application.put_env(:pantheon, :auth_service, original_auth_service)
+      Application.put_env(:allspark, :auth_service, original_auth_service)
     end)
 
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
@@ -32,7 +32,7 @@ defmodule PantheonWeb.AuthControllerTest do
         MockRegisterService
       end.()
 
-      Application.put_env(:pantheon, :auth_service, mock_service)
+      Application.put_env(:allspark, :auth_service, mock_service)
 
       conn = post(conn, ~p"/api/auth/register", %{
         email: "test@example.com",
@@ -54,7 +54,7 @@ defmodule PantheonWeb.AuthControllerTest do
         MockFailRegisterService
       end.()
 
-      Application.put_env(:pantheon, :auth_service, mock_service)
+      Application.put_env(:allspark, :auth_service, mock_service)
 
       conn = post(conn, ~p"/api/auth/register", %{
         email: "test@example.com",
@@ -85,7 +85,7 @@ defmodule PantheonWeb.AuthControllerTest do
         MockLoginService
       end.()
 
-      Application.put_env(:pantheon, :auth_service, mock_service)
+      Application.put_env(:allspark, :auth_service, mock_service)
 
       conn = post(conn, ~p"/api/auth/login", %{
         email: "test@example.com",
@@ -109,7 +109,7 @@ defmodule PantheonWeb.AuthControllerTest do
         MockFailLoginService
       end.()
 
-      Application.put_env(:pantheon, :auth_service, mock_service)
+      Application.put_env(:allspark, :auth_service, mock_service)
 
       conn = post(conn, ~p"/api/auth/login", %{
         email: "test@example.com",
@@ -140,7 +140,7 @@ defmodule PantheonWeb.AuthControllerTest do
         MockMagicLinkService
       end.()
 
-      Application.put_env(:pantheon, :auth_service, mock_service)
+      Application.put_env(:allspark, :auth_service, mock_service)
 
       conn = post(conn, ~p"/api/auth/magic-link", %{
         email: "test@example.com"
@@ -164,7 +164,7 @@ defmodule PantheonWeb.AuthControllerTest do
   #       MockFailMagicLinkService
   #     end.()
 
-  #     Application.put_env(:pantheon, :auth_service, mock_service)
+  #     Application.put_env(:allspark, :auth_service, mock_service)
 
   #     conn = post(conn, ~p"/api/auth/magic-link", %{
   #       email: "wrong@example.com"

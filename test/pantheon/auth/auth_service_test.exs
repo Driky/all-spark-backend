@@ -1,7 +1,7 @@
-defmodule Pantheon.Auth.AuthServiceTest do
+defmodule Allspark.Auth.AuthServiceTest do
   use ExUnit.Case
 
-  alias Pantheon.Auth.AuthService
+  alias Allspark.Auth.AuthService
 
   # Create a mock module for testing
   defmodule MockGoTrue do
@@ -57,16 +57,16 @@ defmodule Pantheon.Auth.AuthServiceTest do
 
   setup do
     # Store original modules
-    original_client = Application.get_env(:pantheon, :supabase_client, Pantheon.Supabase.Client)
-    original_gotrue = Application.get_env(:pantheon, :gotrue_module, Supabase.GoTrue)
+    original_client = Application.get_env(:allspark, :supabase_client, Allspark.Supabase.Client)
+    original_gotrue = Application.get_env(:allspark, :gotrue_module, Supabase.GoTrue)
 
     # Set up mock modules
-    Application.put_env(:pantheon, :gotrue_module, MockGoTrue)
+    Application.put_env(:allspark, :gotrue_module, MockGoTrue)
 
     on_exit(fn ->
       # Restore original modules
-      Application.put_env(:pantheon, :supabase_client, original_client)
-      Application.put_env(:pantheon, :gotrue_module, original_gotrue)
+      Application.put_env(:allspark, :supabase_client, original_client)
+      Application.put_env(:allspark, :gotrue_module, original_gotrue)
     end)
 
     :ok

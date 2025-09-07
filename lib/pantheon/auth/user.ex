@@ -1,4 +1,4 @@
-defmodule Pantheon.Auth.User do
+defmodule Allspark.Auth.User do
   @moduledoc """
   Represents an authenticated user.
   """

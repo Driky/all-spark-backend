@@ -1,12 +1,12 @@
-defmodule PantheonWeb.Endpoint do
-  use Phoenix.Endpoint, otp_app: :pantheon
+defmodule AllsparkWeb.Endpoint do
+  use Phoenix.Endpoint, otp_app: :allspark
 
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
   # Set :encryption_salt if you would also like to encrypt it.
   @session_options [
     store: :cookie,
-    key: "_pantheon_key",
+    key: "_Allspark_key",
     signing_salt: "/T4IpRtz",
     same_site: "Lax"
   ]
@@ -21,9 +21,9 @@ defmodule PantheonWeb.Endpoint do
   # when deploying your static files in production.
   plug Plug.Static,
     at: "/",
-    from: :pantheon,
+    from: :allspark,
     gzip: false,
-    only: PantheonWeb.static_paths()
+    only: AllsparkWeb.static_paths()
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
@@ -31,7 +31,7 @@ defmodule PantheonWeb.Endpoint do
     socket "/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket
     plug Phoenix.LiveReloader
     plug Phoenix.CodeReloader
-    plug Phoenix.Ecto.CheckRepoStatus, otp_app: :pantheon
+    plug Phoenix.Ecto.CheckRepoStatus, otp_app: :allspark
   end
 
   plug Plug.RequestId
@@ -45,5 +45,5 @@ defmodule PantheonWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
-  plug PantheonWeb.Router
+  plug AllsparkWeb.Router
 end
