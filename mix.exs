@@ -1,9 +1,9 @@
-defmodule Pantheon.MixProject do
+defmodule Allspark.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :pantheon,
+      app: :allspark,
       version: "0.1.0",
       elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
@@ -18,7 +18,7 @@ defmodule Pantheon.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {Pantheon.Application, []},
+      mod: {Allspark.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end
@@ -53,7 +53,19 @@ defmodule Pantheon.MixProject do
       {:telemetry_poller, "~> 1.0"},
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
-      {:bandit, "~> 1.5"}
+      {:bandit, "~> 1.5"},
+
+      # Utilities
+      {:ex_machina, "~> 2.7", only: [:dev, :test]},
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.1", only: [:dev], runtime: false},
+      {:typed_struct, "~> 0.3.0"},
+      {:uuid, "~> 1.1"},
+
+      # Supabase Auth
+      {:supabase_gotrue, "~> 0.4.0"},  # Supabase Auth client
+      {:supabase_potion, "0.6.2"},  # Required HTTP client for GoTrue
+      {:joken, "~> 2.5"},              # JWT token validation
     ]
   end
 
@@ -70,10 +82,10 @@ defmodule Pantheon.MixProject do
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
-      "assets.build": ["tailwind pantheon", "esbuild pantheon"],
+      "assets.build": ["tailwind allspark", "esbuild allspark"],
       "assets.deploy": [
-        "tailwind pantheon --minify",
-        "esbuild pantheon --minify",
+        "tailwind allspark --minify",
+        "esbuild allspark --minify",
         "phx.digest"
       ]
     ]

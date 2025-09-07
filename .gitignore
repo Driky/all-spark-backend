@@ -23,7 +23,7 @@ erl_crash.dump
 /tmp/
 
 # Ignore package tarball (built via "mix hex.build").
-pantheon-*.tar
+allspark-*.tar
 
 # Ignore assets that are produced by build tools.
 /priv/static/assets/
@@ -35,3 +35,7 @@ pantheon-*.tar
 npm-debug.log
 /assets/node_modules/
 
+# Ignore config/secrets.exs
+/config/secrets.exs
+
+.elixir_ls/

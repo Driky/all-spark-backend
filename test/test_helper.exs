@@ -1,2 +1,2 @@
 ExUnit.start()
-Ecto.Adapters.SQL.Sandbox.mode(Pantheon.Repo, :manual)
+Ecto.Adapters.SQL.Sandbox.mode(Allspark.Repo, :manual)

@@ -8,8 +8,8 @@ const path = require("path")
 module.exports = {
   content: [
     "./js/**/*.js",
-    "../lib/pantheon_web.ex",
-    "../lib/pantheon_web/**/*.*ex"
+    "../lib/allspark_web.ex",
+    "../lib/allspark_web/**/*.*ex"
   ],
   theme: {
     extend: {

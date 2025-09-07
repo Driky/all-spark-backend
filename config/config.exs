@@ -7,25 +7,25 @@
 # General application configuration
 import Config
 
-config :pantheon,
-  ecto_repos: [Pantheon.Repo],
+config :allspark,
+  ecto_repos: [Allspark.Repo],
   generators: [timestamp_type: :utc_datetime, binary_id: true]
 
 # Configures the endpoint
-config :pantheon, PantheonWeb.Endpoint,
+config :allspark, AllsparkWeb.Endpoint,
   url: [host: "localhost"],
   adapter: Bandit.PhoenixAdapter,
   render_errors: [
-    formats: [html: PantheonWeb.ErrorHTML, json: PantheonWeb.ErrorJSON],
+    formats: [html: AllsparkWeb.ErrorHTML, json: AllsparkWeb.ErrorJSON],
     layout: false
   ],
-  pubsub_server: Pantheon.PubSub,
+  pubsub_server: Allspark.PubSub,
   live_view: [signing_salt: "ZuecMYks"]
 
 # Configure esbuild (the version is required)
 config :esbuild,
   version: "0.17.11",
-  pantheon: [
+  allspark: [
     args:
       ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
     cd: Path.expand("../assets", __DIR__),
@@ -35,7 +35,7 @@ config :esbuild,
 # Configure tailwind (the version is required)
 config :tailwind,
   version: "3.4.3",
-  pantheon: [
+  allspark: [
     args: ~w(
       --config=tailwind.config.js
       --input=css/app.css
@@ -55,3 +55,8 @@ config :phoenix, :json_library, Jason
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
+
+# Import secrets configuration if exists
+if File.exists?("config/secrets.exs") do
+  import_config "secrets.exs"
+end
