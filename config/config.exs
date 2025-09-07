@@ -7,12 +7,12 @@
 # General application configuration
 import Config
 
-config :allpsark,
+config :allspark,
   ecto_repos: [Allspark.Repo],
   generators: [timestamp_type: :utc_datetime, binary_id: true]
 
 # Configures the endpoint
-config :allpsark, AllsparkWeb.Endpoint,
+config :allspark, AllsparkWeb.Endpoint,
   url: [host: "localhost"],
   adapter: Bandit.PhoenixAdapter,
   render_errors: [
@@ -25,7 +25,7 @@ config :allpsark, AllsparkWeb.Endpoint,
 # Configure esbuild (the version is required)
 config :esbuild,
   version: "0.17.11",
-  allpsark: [
+  allspark: [
     args:
       ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
     cd: Path.expand("../assets", __DIR__),
@@ -35,7 +35,7 @@ config :esbuild,
 # Configure tailwind (the version is required)
 config :tailwind,
   version: "3.4.3",
-  allpsark: [
+  allspark: [
     args: ~w(
       --config=tailwind.config.js
       --input=css/app.css
