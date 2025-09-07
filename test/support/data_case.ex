@@ -38,9 +38,6 @@ defmodule Allspark.DataCase do
   def setup_sandbox(tags) do
     pid = Ecto.Adapters.SQL.Sandbox.start_owner!(Allspark.Repo, shared: not tags[:async])
 
-    # Clear projection versions table for tests
-    Allspark.Repo.delete_all("projection_versions")
-
     on_exit(fn -> Ecto.Adapters.SQL.Sandbox.stop_owner(pid) end)
   end
 
