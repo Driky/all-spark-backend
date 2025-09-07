@@ -1,10 +1,10 @@
 # Allspark
 
-A DDD Elixir Phoenix a bootstraping project.
+A DDD Elixir Phoenix a bootstrapping project.
 
 ## Project Overview
 
-AllSpark is a bootstraping project. It will be used as the base for future projects.
+AllSpark is a bootstrapping project. It will be used as the base for future projects.
 
 ## Development Setup
 
