@@ -99,4 +99,31 @@ defmodule Allspark.Auth.AuthService do
         {:error, :invalid_token}
     end
   end
+
+  @doc """
+  Signs out a user with a JWT token.
+  Returns {:ok, message} if successful or already logged out.
+  Returns {:error, reason} for actual server/network errors.
+  """
+  @spec sign_out(String.t()) :: {:ok, String.t()} | {:error, String.t()}
+  def sign_out(token) do
+    # Get the GoTrue module (real or mocked)
+    gotrue = Application.get_env(:allspark, :gotrue_module, Supabase.GoTrue)
+    client_module = Application.get_env(:allspark, :supabase_client, Client)
+    {:ok, client} = client_module.get_client()
+
+    session = %Supabase.GoTrue.Session{access_token: token}
+
+    # Note: Supabase.GoTrue.Admin.sign_out already returns :ok for unauthorized/not_found
+    case gotrue.sign_out(client, session, :local) do
+      :ok ->
+        {:ok, "Successfully signed out"}
+
+      {:error, %{message: message}} ->
+        {:error, message}
+
+      {:error, error} ->
+        {:error, "Sign out failed: #{inspect(error)}"}
+    end
+  end
 end

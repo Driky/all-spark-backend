@@ -53,6 +53,28 @@ defmodule Allspark.Auth.AuthServiceTest do
     def get_user(_, _) do
       {:error, %{"message" => "Invalid token"}}
     end
+
+    # Mock sign_out matching real Supabase behavior
+    # Real implementation returns :ok for success, unauthorized, and not_found
+    def sign_out(_client, %{access_token: "valid_token"}, :local) do
+      :ok
+    end
+
+    def sign_out(_client, %{access_token: "unauthorized_token"}, :local) do
+      :ok  # Real Supabase returns :ok for unauthorized
+    end
+
+    def sign_out(_client, %{access_token: "not_found_token"}, :local) do
+      :ok  # Real Supabase returns :ok for not_found
+    end
+
+    def sign_out(_client, %{access_token: "server_error_token"}, :local) do
+      {:error, %{message: "Internal server error"}}
+    end
+
+    def sign_out(_, _, _) do
+      :ok
+    end
   end
 
   setup do
@@ -121,6 +143,28 @@ defmodule Allspark.Auth.AuthServiceTest do
     test "returns error with invalid input" do
       assert {:error, "Invalid signup"} =
         AuthService.sign_up("wrong@example.com", "wrong")
+    end
+  end
+
+  describe "sign_out/1" do
+    test "returns ok when sign out succeeds with valid token" do
+      assert {:ok, "Successfully signed out"} =
+        AuthService.sign_out("valid_token")
+    end
+
+    test "returns ok when token is unauthorized (Supabase returns :ok)" do
+      assert {:ok, "Successfully signed out"} =
+        AuthService.sign_out("unauthorized_token")
+    end
+
+    test "returns ok when token is not found (Supabase returns :ok)" do
+      assert {:ok, "Successfully signed out"} =
+        AuthService.sign_out("not_found_token")
+    end
+
+    test "returns error when server error occurs" do
+      assert {:error, "Internal server error"} =
+        AuthService.sign_out("server_error_token")
     end
   end
 end
