@@ -32,6 +32,7 @@ defmodule AllsparkWeb.Router do
     post "/register", AuthController, :register
     post "/login", AuthController, :login
     post "/magic-link", AuthController, :magic_link
+    post "/resend-verification", AuthController, :resend_verification
   end
 
   # Protected API endpoints (auth required)

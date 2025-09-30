@@ -51,4 +51,13 @@ defmodule AllsparkWeb.AuthController do
         {:error, reason}
     end
   end
+
+  def resend_verification(conn, %{"email" => email}) do
+    auth_service = Application.get_env(:allspark, :auth_service, AuthService)
+
+    with {:ok, message} <- auth_service.resend_verification_email(email) do
+      conn
+      |> render(:message, data: %{message: message})
+    end
+  end
 end

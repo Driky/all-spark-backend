@@ -29,6 +29,14 @@ defmodule AllsparkWeb.FallbackController do
     |> render(:error, status: :unauthorized, message: "Invalid login credentials")
   end
 
+  # Failed to resend verification email
+  def call(conn, {:error, "Failed to resend verification email"}) do
+    conn
+    |> put_status(:unauthorized)
+    |> put_view(json: AllsparkWeb.ErrorJSON)
+    |> render(:error, status: :unauthorized, message: "Failed to resend verification email")
+  end
+
   # Fallback for all other errors
   def call(conn, {:error, _reason}) do
     conn

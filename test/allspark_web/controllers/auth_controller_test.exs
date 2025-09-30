@@ -273,4 +273,59 @@ defmodule AllsparkWeb.AuthControllerTest do
       assert json_response(conn, 401)["errors"]["detail"] == "Token expired"
     end
   end
+
+  describe "resend_verification/2" do
+    test "returns success when resending verification email", %{conn: conn} do
+      # Mock the auth service
+      mock_service = fn ->
+        defmodule MockResendVerificationService do
+          def sign_up(_, _), do: {:error, :not_found}
+          def sign_in(_, _), do: {:error, :not_found}
+
+          def resend_verification_email("test@example.com") do
+            {:ok, "Verification email resent"}
+          end
+
+          def resend_verification_email(_) do
+            {:error, "Failed to resend verification email"}
+          end
+        end
+
+        MockResendVerificationService
+      end.()
+
+      Application.put_env(:allspark, :auth_service, mock_service)
+
+      conn = post(conn, ~p"/api/auth/resend-verification", %{
+        email: "test@example.com"
+      })
+
+      assert %{"message" => "Verification email resent"} = json_response(conn, 200)["data"]
+    end
+
+    test "returns error when resend fails", %{conn: conn} do
+      # Mock the auth service
+      mock_service = fn ->
+        defmodule MockFailResendVerificationService do
+          def sign_up(_, _), do: {:error, :not_found}
+          def sign_in(_, _), do: {:error, :not_found}
+
+          def resend_verification_email(_) do
+            {:error, "Failed to resend verification email"}
+          end
+        end
+
+        MockFailResendVerificationService
+      end.()
+
+      Application.put_env(:allspark, :auth_service, mock_service)
+
+      conn = post(conn, ~p"/api/auth/resend-verification", %{
+        email: "invalid@example.com"
+      })
+
+      assert json_response(conn, 401)["errors"] != %{}
+      assert json_response(conn, 401)["errors"]["detail"] == "Failed to resend verification email"
+    end
+  end
 end

@@ -35,6 +35,14 @@ defmodule Allspark.Auth.AuthServiceTest do
       {:error, %{"message" => "Failed to send magic link"}}
     end
 
+    def resend(_client, "test@example.com", %{type: :signup, options: %{email_redirect_to: _}}) do
+      :ok
+    end
+
+    def resend(_client, _, _) do
+      {:error, %{metadata: %{resp_body: %{"message" => "Failed to resend verification email"}}}}
+    end
+
     def get_user(_client, %{access_token: "valid_token"}) do
       {:ok, %{
         "id" => "user-123",
@@ -165,6 +173,18 @@ defmodule Allspark.Auth.AuthServiceTest do
     test "returns error when server error occurs" do
       assert {:error, "Internal server error"} =
         AuthService.sign_out("server_error_token")
+    end
+  end
+
+  describe "resend_verification_email/1" do
+    test "returns success message when resending verification email" do
+      assert {:ok, "Verification email resent"} =
+        AuthService.resend_verification_email("test@example.com")
+    end
+
+    test "returns error when resend fails" do
+      assert {:error, "Failed to resend verification email"} =
+        AuthService.resend_verification_email("invalid@example.com")
     end
   end
 end

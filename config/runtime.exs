@@ -53,6 +53,9 @@ if config_env() == :prod do
 
   config :allspark, :dns_cluster_query, System.get_env("DNS_CLUSTER_QUERY")
 
+  # Email redirect configuration for Supabase auth
+  config :allspark, :email_redirect_to, System.get_env("EMAIL_REDIRECT_TO") || "https://#{host}/login"
+
   config :allspark, AllsparkWeb.Endpoint,
     url: [host: host, port: 443, scheme: "https"],
     http: [

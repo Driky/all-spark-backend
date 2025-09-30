@@ -126,4 +126,33 @@ defmodule Allspark.Auth.AuthService do
         {:error, "Sign out failed: #{inspect(error)}"}
     end
   end
+
+  @doc """
+  Resends a verification email to the provided email address.
+  """
+  @spec resend_verification_email(String.t()) :: {:ok, String.t()} | {:error, String.t()}
+  def resend_verification_email(email) do
+    # Get the GoTrue module (real or mocked)
+    gotrue = Application.get_env(:allspark, :gotrue_module, Supabase.GoTrue)
+    client_module = Application.get_env(:allspark, :supabase_client, Client)
+    {:ok, client} = client_module.get_client()
+
+    # Get email_redirect_to from config (fail if not configured)
+    email_redirect_to = Application.fetch_env!(:allspark, :email_redirect_to)
+
+    params = %{
+      type: :signup,
+      options: %{
+        email_redirect_to: email_redirect_to
+      }
+    }
+
+    case gotrue.resend(client, email, params) do
+      :ok ->
+        {:ok, "Verification email resent"}
+
+      {:error, error} ->
+        {:error, error.metadata.resp_body["message"] || "Failed to resend verification email"}
+    end
+  end
 end
