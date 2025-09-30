@@ -42,9 +42,13 @@ defmodule AllsparkWeb.AuthController do
       _ -> nil
     end
 
-    with {:ok, message} <- auth_service.sign_out(token) do
-      conn
-      |> render(:message, data: %{message: message})
+    case auth_service.sign_out(token) do
+      {:ok, message} ->
+        conn
+        |> render(:message, data: %{message: message})
+
+      {:error, reason} ->
+        {:error, reason}
     end
   end
 end

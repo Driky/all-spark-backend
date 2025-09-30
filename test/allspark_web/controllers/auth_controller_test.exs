@@ -245,7 +245,11 @@ defmodule AllsparkWeb.AuthControllerTest do
       |> put_req_header("authorization", "Bearer valid_token")
       |> post(~p"/api/auth/logout")
 
-      assert json_response(conn, 500)["errors"] != %{}
+      # Verify error response structure from FallbackController
+      response = json_response(conn, 500)
+      assert response["errors"] != %{}
+      assert response["errors"]["detail"] == "An unexpected error occurred"
+      assert response["errors"]["status"] == 500
     end
 
     test "returns 401 when no authorization token provided", %{conn: conn} do
