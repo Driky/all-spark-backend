@@ -38,6 +38,7 @@ defmodule AllsparkWeb.Router do
   scope "/api", AllsparkWeb do
     pipe_through [:api, :auth]
 
+    post "/auth/logout", AuthController, :logout
     #resources "/patients", PatientController, except: [:new, :edit, :delete]
     #get "/nutritionists/:nutritionist_id/patients", PatientController, :list_by_nutritionist
   end
