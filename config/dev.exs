@@ -79,3 +79,6 @@ config :phoenix_live_view,
   debug_heex_annotations: true,
   # Enable helpful, but potentially expensive runtime checks
   enable_expensive_runtime_checks: true
+
+# Email redirect configuration for Supabase auth
+config :allspark, :email_redirect_to, "http://localhost:3000/login"

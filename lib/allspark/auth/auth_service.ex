@@ -99,4 +99,59 @@ defmodule Allspark.Auth.AuthService do
         {:error, :invalid_token}
     end
   end
+
+  @doc """
+  Signs out a user with a JWT token.
+  Returns {:ok, message} if successful or already logged out.
+  Returns {:error, reason} for actual server/network errors.
+  """
+  @spec sign_out(String.t()) :: {:ok, String.t()} | {:error, String.t()}
+  def sign_out(token) do
+    # Get the GoTrue module (real or mocked)
+    gotrue = Application.get_env(:allspark, :gotrue_module, Supabase.GoTrue)
+    client_module = Application.get_env(:allspark, :supabase_client, Client)
+    {:ok, client} = client_module.get_client()
+
+    session = %Supabase.GoTrue.Session{access_token: token}
+
+    # Note: Supabase.GoTrue.Admin.sign_out already returns :ok for unauthorized/not_found
+    case gotrue.sign_out(client, session, :local) do
+      :ok ->
+        {:ok, "Successfully signed out"}
+
+      {:error, %{message: message}} ->
+        {:error, message}
+
+      {:error, error} ->
+        {:error, "Sign out failed: #{inspect(error)}"}
+    end
+  end
+
+  @doc """
+  Resends a verification email to the provided email address.
+  """
+  @spec resend_verification_email(String.t()) :: {:ok, String.t()} | {:error, String.t()}
+  def resend_verification_email(email) do
+    # Get the GoTrue module (real or mocked)
+    gotrue = Application.get_env(:allspark, :gotrue_module, Supabase.GoTrue)
+    client_module = Application.get_env(:allspark, :supabase_client, Client)
+    {:ok, client} = client_module.get_client()
+
+    # Get email_redirect_to from config (fail if not configured)
+    email_redirect_to = Application.fetch_env!(:allspark, :email_redirect_to)
+
+    # Structure params according to Supabase.GoTrue.Schemas.ResendParams
+    params = %{
+      type: :signup,
+      email_redirect_to: email_redirect_to
+    }
+
+    case gotrue.resend(client, email, params) do
+      :ok ->
+        {:ok, "Verification email resent"}
+
+      {:error, error} ->
+        {:error, error.metadata.resp_body["message"] || "Failed to resend verification email"}
+    end
+  end
 end

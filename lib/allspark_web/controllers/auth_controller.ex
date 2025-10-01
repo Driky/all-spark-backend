@@ -32,4 +32,32 @@ defmodule AllsparkWeb.AuthController do
       |> render(:message, data: %{message: message})
     end
   end
+
+  def logout(conn, _params) do
+    auth_service = Application.get_env(:allspark, :auth_service, AuthService)
+
+    # Extract token from Authorization header
+    token = case get_req_header(conn, "authorization") do
+      ["Bearer " <> token] -> token
+      _ -> nil
+    end
+
+    case auth_service.sign_out(token) do
+      {:ok, message} ->
+        conn
+        |> render(:message, data: %{message: message})
+
+      {:error, reason} ->
+        {:error, reason}
+    end
+  end
+
+  def resend_verification(conn, %{"email" => email}) do
+    auth_service = Application.get_env(:allspark, :auth_service, AuthService)
+
+    with {:ok, message} <- auth_service.resend_verification_email(email) do
+      conn
+      |> render(:message, data: %{message: message})
+    end
+  end
 end
