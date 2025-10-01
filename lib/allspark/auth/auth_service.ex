@@ -140,11 +140,10 @@ defmodule Allspark.Auth.AuthService do
     # Get email_redirect_to from config (fail if not configured)
     email_redirect_to = Application.fetch_env!(:allspark, :email_redirect_to)
 
+    # Structure params according to Supabase.GoTrue.Schemas.ResendParams
     params = %{
       type: :signup,
-      options: %{
-        email_redirect_to: email_redirect_to
-      }
+      email_redirect_to: email_redirect_to
     }
 
     case gotrue.resend(client, email, params) do

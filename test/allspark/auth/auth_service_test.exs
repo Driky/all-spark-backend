@@ -35,7 +35,7 @@ defmodule Allspark.Auth.AuthServiceTest do
       {:error, %{"message" => "Failed to send magic link"}}
     end
 
-    def resend(_client, "test@example.com", %{type: :signup, options: %{email_redirect_to: _}}) do
+    def resend(_client, "test@example.com", %{type: :signup, email_redirect_to: _}) do
       :ok
     end
 
