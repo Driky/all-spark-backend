@@ -12,6 +12,8 @@ defmodule Allspark.Application do
     children = [
       AllsparkWeb.Telemetry,
       Allspark.Repo,
+      FinancialAccounts.App,
+      {Oban, Application.fetch_env!(:allspark, Oban)},
       {DNSCluster, query: Application.get_env(:allspark, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: Allspark.PubSub},
       # Start a worker by calling: Allspark.Worker.start_link(arg)
