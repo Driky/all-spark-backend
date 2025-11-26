@@ -66,6 +66,28 @@ defmodule Allspark.MixProject do
       {:supabase_gotrue, "~> 0.4.0"},  # Supabase Auth client
       {:supabase_potion, "0.6.2"},  # Required HTTP client for GoTrue
       {:joken, "~> 2.5"},              # JWT token validation
+
+      # Event Sourcing & CQRS
+      {:commanded, "~> 1.4"},
+      {:commanded_ecto_projections, "~> 1.3"},
+      {:eventstore, "~> 1.4"},
+      {:commanded_eventstore_adapter, "~> 1.4"},
+
+      # Background Jobs
+      {:oban, "~> 2.17"},
+
+      # File Storage (S3-compatible)
+      {:ex_aws, "~> 2.5"},
+      {:ex_aws_s3, "~> 2.4"},
+      {:hackney, "~> 1.20"},
+      {:sweet_xml, "~> 0.7"},  # Required by ex_aws
+
+      # HTTP Client & Utilities
+      {:req, "~> 0.5"},
+      {:decimal, "~> 2.1"},
+
+      # RRULE for recurring transactions (Phase 2)
+      # {:ex_rrule, "~> 0.2"},
     ]
   end
 
@@ -77,10 +99,12 @@ defmodule Allspark.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      setup: ["deps.get", "ecto.setup", "assets.setup", "assets.build"],
+      setup: ["deps.get", "ecto.setup", "event_store.setup", "assets.setup", "assets.build"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
+      "event_store.setup": ["event_store.create", "event_store.init"],
+      "event_store.reset": ["event_store.drop", "event_store.setup"],
+      test: ["ecto.create --quiet", "ecto.migrate --quiet", "event_store.create --quiet", "event_store.init --quiet", "test"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
       "assets.build": ["tailwind allspark", "esbuild allspark"],
       "assets.deploy": [
