@@ -13,6 +13,5 @@ defmodule FinancialAccounts.App do
       event_store: FinancialAccounts.EventStore
     ]
 
-  # Router will be defined and registered later
-  # router FinancialAccounts.Router
+  router FinancialAccounts.Router
 end
