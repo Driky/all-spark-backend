@@ -32,3 +32,25 @@ config :phoenix_live_view,
 
 # Email redirect configuration for Supabase auth
 config :allspark, :email_redirect_to, "http://localhost:3000/login"
+
+# Event Store configuration for testing
+config :allspark, FinancialAccounts.EventStore,
+  serializer: EventStore.JsonbSerializer,
+  username: "postgres",
+  password: "postgres",
+  database: "allspark_eventstore_test#{System.get_env("MIX_TEST_PARTITION")}",
+  hostname: "localhost",
+  pool_size: System.schedulers_online() * 2,
+  pool: Ecto.Adapters.SQL.Sandbox
+
+# Commanded test configuration
+config :allspark, FinancialAccounts.App,
+  event_store: [
+    adapter: Commanded.EventStore.Adapters.EventStore,
+    event_store: FinancialAccounts.EventStore
+  ],
+  pubsub: :local,
+  registry: :local
+
+# Oban test configuration (testing mode)
+config :allspark, Oban, testing: :inline

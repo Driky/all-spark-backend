@@ -82,3 +82,42 @@ config :phoenix_live_view,
 
 # Email redirect configuration for Supabase auth
 config :allspark, :email_redirect_to, "http://localhost:3000/login"
+
+# Event Store configuration for Financial Accounts
+config :allspark, FinancialAccounts.EventStore,
+  serializer: EventStore.JsonbSerializer,
+  username: "postgres",
+  password: "postgres",
+  database: "allspark_eventstore_dev",
+  hostname: "localhost",
+  pool_size: 10,
+  pool_overflow: 5
+
+# Commanded application configuration
+config :allspark, FinancialAccounts.App,
+  event_store: [
+    adapter: Commanded.EventStore.Adapters.EventStore,
+    event_store: FinancialAccounts.EventStore
+  ],
+  pubsub: :local,
+  registry: :local
+
+# Oban configuration for background jobs
+config :allspark, Oban,
+  engine: Oban.Engines.Basic,
+  queues: [
+    exchange_rates: 5,
+    recurring_transactions: 10,
+    default: 10
+  ],
+  plugins: [
+    {Oban.Plugins.Pruner, max_age: 60 * 60 * 24 * 7},  # Keep jobs for 7 days
+    {Oban.Plugins.Cron,
+     crontab: [
+       # Exchange rate updates every hour
+       # {"0 * * * *", FinancialAccounts.Workers.ExchangeRateUpdater}
+       # Recurring transaction generator (Phase 2)
+       # {"0 2 * * *", FinancialAccounts.Workers.RecurringTransactionGenerator}
+     ]}
+  ],
+  repo: Allspark.Repo

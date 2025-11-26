@@ -9,6 +9,7 @@ import Config
 
 config :allspark,
   ecto_repos: [Allspark.Repo],
+  event_stores: [FinancialAccounts.EventStore],
   generators: [timestamp_type: :utc_datetime, binary_id: true]
 
 # Configures the endpoint
